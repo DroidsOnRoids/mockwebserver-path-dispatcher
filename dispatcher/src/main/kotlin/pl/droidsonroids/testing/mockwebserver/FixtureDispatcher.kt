@@ -6,10 +6,10 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
 import java.util.*
 
-class FixtureDispatcher(protected val pathPrefix: String) : Dispatcher() {
-    internal var responseBuilder = MockResponseBuilder()
+class FixtureDispatcher internal constructor(private val pathPrefix: String, private val responseBuilder: MockResponseBuilder) : Dispatcher() {
+    constructor(pathPrefix: String) : this(pathPrefix, MockResponseBuilder())
 
-    protected val responses: MutableMap<Condition, String> = TreeMap()
+    private val responses: MutableMap<Condition, String> = TreeMap()
 
     override fun dispatch(request: RecordedRequest): MockResponse {
         return dispatch(request.requestUrl)

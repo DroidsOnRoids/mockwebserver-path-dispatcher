@@ -1,35 +1,32 @@
 package pl.droidsonroids.testing.mockwebserver
 
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.mock
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
-import pl.droidsonroids.testing.mockwebserver.Fixture
-import pl.droidsonroids.testing.mockwebserver.MockResponseBuilder
-import pl.droidsonroids.testing.mockwebserver.ResourcesParser
 
-/**
- * * Created by MS on 14/06/2017.
- */
 internal class MockResponseBuilderTest {
-    lateinit var builder: MockResponseBuilder
-    private val BODY = "body"
-    val fixture = Fixture()
+    private val body = "body"
+    private lateinit var builder: MockResponseBuilder
+    private lateinit var fixture: Fixture
 
     @Before
     fun setUp() {
-        builder = MockResponseBuilder()
-        builder.parser = object : ResourcesParser() {
-            override fun parseFrom(fileName: String) = fixture
-        }
+        fixture = Fixture()
+        builder = MockResponseBuilder(mock<ResourcesParser> {
+            on { parseFrom(any()) } doReturn fixture
+        })
     }
 
     @Test
     fun `body set when present`() {
         fixture.statusCode = 200
-        fixture.body = BODY
+        fixture.body = body
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.status).contains("200")
-        assertThat(mockResponse.body.readUtf8()).isEqualTo(BODY)
+        assertThat(mockResponse.body.readUtf8()).isEqualTo(body)
     }
 
     @Test

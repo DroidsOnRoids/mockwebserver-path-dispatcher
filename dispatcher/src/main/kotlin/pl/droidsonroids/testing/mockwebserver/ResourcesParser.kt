@@ -1,9 +1,10 @@
 package pl.droidsonroids.testing.mockwebserver
 
+import org.yaml.snakeyaml.Yaml
 import java.lang.IllegalStateException
 
 internal open class ResourcesParser {
-    private val parser = org.yaml.snakeyaml.Yaml()
+    private val parser = Yaml()
 
     open fun parseFrom(fileName: String): Fixture {
         val path = "fixtures/$fileName.yaml"

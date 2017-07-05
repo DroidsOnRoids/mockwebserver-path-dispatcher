@@ -10,15 +10,16 @@ import org.junit.Test
 import org.junit.rules.ExpectedException
 
 class FixtureDispatcherTest {
-    @get:Rule val expectedException = ExpectedException.none()
+    @get:Rule val expectedException: ExpectedException = ExpectedException.none()
 
-    lateinit var dispatcher: FixtureDispatcher
-    val pathPrefix = "/prefix/"
+    private val pathPrefix = "/prefix/"
+    private lateinit var dispatcher: FixtureDispatcher
+    private lateinit var responseBuilder: MockResponseBuilder
 
     @Before
     fun setUp() {
-        dispatcher = FixtureDispatcher(pathPrefix)
-        dispatcher.responseBuilder = mock<MockResponseBuilder>()
+        responseBuilder = mock<MockResponseBuilder>()
+        dispatcher = FixtureDispatcher(pathPrefix, responseBuilder)
         dispatcher.addResponse(Condition.withPathInfix("path"), "pathOnly")
         dispatcher.addResponse(Condition.withPathInfixAndQueryParameter("path", "name"), "pathAndName")
         dispatcher.addResponse(Condition.withPathInfixAndQueryParameter("path", "name", "value"), "pathAndNameAndValue")
@@ -36,21 +37,21 @@ class FixtureDispatcherTest {
     fun `matches response with path only` () {
         val url = HttpUrl.parse("http://test.test/prefix/path")!!
         dispatcher.dispatch(url)
-        verify(dispatcher.responseBuilder).buildMockResponse("pathOnly")
+        verify(responseBuilder).buildMockResponse("pathOnly")
     }
 
     @Test
     fun `matches response with path and parameter name` () {
         val url = HttpUrl.parse("http://test.test/prefix/path?name=whatever")!!
         dispatcher.dispatch(url)
-        verify(dispatcher.responseBuilder).buildMockResponse("pathAndName")
+        verify(responseBuilder).buildMockResponse("pathAndName")
     }
 
     @Test
     fun `matches response with path and parameter name and value` () {
         val url = HttpUrl.parse("http://test.test/prefix/path?name=value")!!
         dispatcher.dispatch(url)
-        verify(dispatcher.responseBuilder).buildMockResponse("pathAndNameAndValue")
+        verify(responseBuilder).buildMockResponse("pathAndNameAndValue")
     }
 
     @Test
@@ -58,7 +59,7 @@ class FixtureDispatcherTest {
         val url = HttpUrl.parse("http://test.test/prefix/whatever?name=value")!!
         expectedException.expectMessage("Unexpected request: $url")
         dispatcher.dispatch(url)
-        verify(dispatcher.responseBuilder).buildMockResponse("pathAndNameAndValue")
+        verify(responseBuilder).buildMockResponse("pathAndNameAndValue")
     }
 
     @Test
@@ -66,7 +67,7 @@ class FixtureDispatcherTest {
     fun `matches response with path and multiple parameters with same name` () {
         val url = HttpUrl.parse("http://test.test/prefix/path?name=whatever&name=value")!!
         dispatcher.dispatch(url)
-        verify(dispatcher.responseBuilder).buildMockResponse("pathAndNameAndValue")
+        verify(responseBuilder).buildMockResponse("pathAndNameAndValue")
     }
 
 
