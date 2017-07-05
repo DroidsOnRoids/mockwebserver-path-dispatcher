@@ -1,5 +1,7 @@
 package pl.droidsonroids.testing.mockwebserver
 
+import java.lang.IllegalStateException
+
 internal open class ResourcesParser {
     private val parser = org.yaml.snakeyaml.Yaml()
 
@@ -17,6 +19,6 @@ internal open class ResourcesParser {
 
     private fun String.getResourceAsString(): String {
         val loader = Thread.currentThread().contextClassLoader
-        return loader.getResource(this)?.readText() ?: throw java.lang.IllegalStateException("Invalid path: $this")
+        return loader.getResource(this)?.readText() ?: throw IllegalStateException("Invalid path: $this")
     }
 }

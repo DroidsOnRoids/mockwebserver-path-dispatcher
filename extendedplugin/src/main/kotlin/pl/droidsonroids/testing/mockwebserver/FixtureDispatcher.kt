@@ -1,33 +1,37 @@
 package pl.droidsonroids.testing.mockwebserver
 
-class FixtureDispatcher (protected val urlInfix: String) : okhttp3.mockwebserver.Dispatcher() {
+import okhttp3.HttpUrl
+import okhttp3.mockwebserver.Dispatcher
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.RecordedRequest
+import java.util.*
+
+class FixtureDispatcher(protected val pathPrefix: String) : Dispatcher() {
     internal var responseBuilder = MockResponseBuilder()
 
-    protected val responses: MutableMap<Condition, String> = java.util.TreeMap()
+    protected val responses: MutableMap<Condition, String> = TreeMap()
 
-    override fun dispatch(request: okhttp3.mockwebserver.RecordedRequest): okhttp3.mockwebserver.MockResponse {
-        val url = request.requestUrl
-
-        val query = request.body.readUtf8()
-        return dispatch(request.path, query)
+    override fun dispatch(request: RecordedRequest): MockResponse {
+        return dispatch(request.requestUrl)
     }
 
-    internal fun dispatch(path: String, query: String): okhttp3.mockwebserver.MockResponse {
-        val partialInfix = path.replaceFirst(urlInfix.toRegex(), "")
+    internal fun dispatch(url: HttpUrl): MockResponse {
+        val requestPathSuffix = url.encodedPath().removePrefix(pathPrefix)
+        val requestQueryParameterNames = url.queryParameterNames()
+
         responses.forEach { (condition, fixture) ->
-            if (partialInfix.startsWith(condition.pathInfix)) {
+            if (requestPathSuffix.startsWith(condition.pathInfix)) {
                 if (condition.queryParameterName == null) {
                     return responseBuilder.buildMockResponse(fixture)
-                } else {
-                    val queryUri = android.net.Uri.Builder().encodedQuery(query).build()
-                    val queryParameterValue = queryUri.getQueryParameter(condition.queryParameterName)
-                    if (condition.queryParameterValue == null || condition.queryParameterValue == queryParameterValue) {
+                } else if (requestQueryParameterNames.contains(condition.queryParameterName)) {
+                    val requestQueryParameterValue = url.queryParameter(condition.queryParameterName)
+                    if (condition.queryParameterValue == null || condition.queryParameterValue == requestQueryParameterValue) {
                         return responseBuilder.buildMockResponse(fixture)
                     }
                 }
             }
         }
-        throw IllegalArgumentException("Unexpected request path: $path")
+        throw IllegalArgumentException("Unexpected request: $url")
     }
 
     fun addResponse(condition: Condition, responseFixtureName: String) {

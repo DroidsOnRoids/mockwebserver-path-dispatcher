@@ -1,12 +1,14 @@
 package pl.droidsonroids.testing.mockwebserver
 
+import okhttp3.mockwebserver.MockResponse
+
 internal open class MockResponseBuilder {
     internal var parser = ResourcesParser()
 
-    internal open fun buildMockResponse(responseFixtureName: String): okhttp3.mockwebserver.MockResponse {
+    internal open fun buildMockResponse(responseFixtureName: String): MockResponse {
         val fixture = parser.parseFrom(responseFixtureName)
 
-        val mockResponse = okhttp3.mockwebserver.MockResponse()
+        val mockResponse = MockResponse()
         mockResponse.setResponseCode(fixture.statusCode)
 
         if (fixture.body != null) {
