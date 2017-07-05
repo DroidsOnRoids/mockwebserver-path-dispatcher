@@ -10,5 +10,4 @@ internal class Fixture {
         internal set
 
     internal fun hasJsonBody() = body?.isPossibleJson() ?: false
-
 }
