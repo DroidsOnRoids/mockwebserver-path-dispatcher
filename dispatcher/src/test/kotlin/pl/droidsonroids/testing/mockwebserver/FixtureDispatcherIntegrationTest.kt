@@ -14,17 +14,22 @@ class FixtureDispatcherIntegrationTest {
 
 	@Test
 	fun `response dispatched with mockwebserver`() {
-		val expectedText = Thread.currentThread().contextClassLoader.getResource("fixtures/body.txt").readText()
+		val expectedText = Thread.currentThread()
+				.contextClassLoader
+				.getResource("fixtures/body.txt")
+				.readText()
 
 		val dispatcher = FixtureDispatcher("/prefix/")
 		dispatcher.putResponse(Condition.withPathInfix("infix"), "body_path")
 		server.setDispatcher(dispatcher)
+
 		val httpUrl = HttpUrl.Builder()
 				.host(server.hostName)
 				.port(server.port)
 				.scheme("http")
 				.encodedPath("/prefix/infix")
 				.build()
+
 		OkHttpClient().newCall(Request.Builder()
 				.url(httpUrl)
 				.build())
