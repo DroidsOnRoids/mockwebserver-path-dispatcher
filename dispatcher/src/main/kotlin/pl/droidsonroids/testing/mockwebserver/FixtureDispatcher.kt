@@ -9,7 +9,6 @@ import java.util.*
 /**
  * The dispatcher using conditional fixture response mapping.
  * Use <code>putResponse(condition, responseFixtureName)</code> to create mappings.
- * If received request does not match any added mapping <code>IllegalArgumentException</code> will be thrown.
  */
 class FixtureDispatcher internal constructor(private val pathPrefix: String,
                                              private val responseBuilder: ResponseBuilder) : Dispatcher() {

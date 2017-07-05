@@ -11,9 +11,8 @@ internal class MockResponseBuilder constructor(private val parser: ResourcesPars
         val mockResponse = MockResponse()
         mockResponse.setResponseCode(fixture.statusCode)
 
-        if (fixture.body != null) {
-            mockResponse.setBody(fixture.body!!)
-        }
+        fixture.body?.let(mockResponse::setBody)
+
         fixture.headers.forEach {
             mockResponse.addHeader(it)
         }

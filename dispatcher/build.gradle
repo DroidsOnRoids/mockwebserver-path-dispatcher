@@ -1,8 +1,14 @@
+plugins {
+    id 'maven-publish'
+    id 'signing'
+    id 'jacoco'
+    id 'org.jetbrains.kotlin.jvm' version '1.1.3-2'
+}
+
 apply plugin: 'kotlin'
-apply plugin: 'jacoco'
 
 dependencies {
-    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.3-2'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib'
     compile 'com.squareup.okhttp3:mockwebserver:3.8.1'
     compile 'pl.droidsonroids.yaml:snakeyaml:1.18-android'
     testCompile 'org.assertj:assertj-core:3.8.0'
@@ -11,11 +17,6 @@ dependencies {
     }
     testCompile 'org.mockito:mockito-core:2.8.47'
     testCompile 'junit:junit:4.12'
-}
-
-task copyTestResources(type: Copy) {
-    from "${projectDir}/src/test/resources"
-    into "${buildDir}/classes/test"
 }
 
 jacoco {
@@ -27,5 +28,49 @@ jacocoTestReport {
         xml.enabled true
         csv.enabled false
         html.enabled true
+    }
+}
+
+group = GROUP
+version = VERSION
+
+modifyPom {
+    project {
+        name POM_NAME
+        description POM_DESCRIPTION
+        url POM_URL
+
+        scm {
+            connection POM_SCM_CONNECTION_URL
+            developerConnection POM_SCM_CONNECTION_URL
+            url POM_URL
+        }
+
+        licenses {
+            license {
+                name 'MIT License'
+                url 'https://opensource.org/licenses/MIT'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'mszydlow'
+                name 'Michał Szydłowski'
+                email 'michal.szydlowski@droidsonroids.pl'
+                roles {
+                    role 'developer'
+                }
+            }
+            developer {
+                id 'koral'
+                name 'Karol Wrótniak'
+                email 'karol.wrotniak@droidsonroids.pl'
+                roles {
+                    role 'developer'
+                }
+            }
+        }
     }
 }
