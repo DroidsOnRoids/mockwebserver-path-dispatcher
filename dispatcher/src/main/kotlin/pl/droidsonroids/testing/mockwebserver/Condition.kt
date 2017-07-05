@@ -1,9 +1,8 @@
 package pl.droidsonroids.testing.mockwebserver
 
-class Condition : Comparable<Condition> {
-    internal lateinit var pathInfix: String
-    internal var queryParameterName: String? = null
-    internal var queryParameterValue: String? = null
+class Condition(internal val pathInfix: String,
+                internal val queryParameterName: String? = null,
+                internal val queryParameterValue: String? = null) : Comparable<Condition> {
 
     override fun compareTo(other: Condition) = when {
         score > other.score -> -1
@@ -21,23 +20,13 @@ class Condition : Comparable<Condition> {
         }
 
     companion object {
+        fun withPathInfixAndQueryParameter(pathInfix: String, queryParameterName: String, queryParameterValue: String) =
+                Condition(pathInfix, queryParameterName, queryParameterValue)
 
-        fun withPathInfixAndQueryParameter(pathInfix: String, queryParameterName: String, queryParameterValue: String): Condition {
-            val condition = Condition.Companion.withPathInfixAndQueryParameter(pathInfix, queryParameterName)
-            condition.queryParameterValue = queryParameterValue
-            return condition
-        }
+        fun withPathInfixAndQueryParameter(pathInfix: String, queryParameterName: String) =
+                Condition(pathInfix, queryParameterName)
 
-        fun withPathInfixAndQueryParameter(pathInfix: String, queryParameterName: String): Condition {
-            val condition = Condition.Companion.withPathInfix(pathInfix)
-            condition.queryParameterName = queryParameterName
-            return condition
-        }
-
-        fun withPathInfix(pathInfix: String): Condition {
-            val condition = Condition()
-            condition.pathInfix = pathInfix
-            return condition
-        }
+        fun withPathInfix(pathInfix: String) =
+                Condition(pathInfix)
     }
 }
