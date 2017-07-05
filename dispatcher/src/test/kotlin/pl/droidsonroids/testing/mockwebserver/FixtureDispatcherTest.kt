@@ -3,34 +3,31 @@ package pl.droidsonroids.testing.mockwebserver
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import okhttp3.HttpUrl
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Before
 import org.junit.Ignore
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.ExpectedException
 
 class FixtureDispatcherTest {
-    @get:Rule val expectedException: ExpectedException = ExpectedException.none()
-
     private val pathPrefix = "/prefix/"
     private lateinit var dispatcher: FixtureDispatcher
-    private lateinit var responseBuilder: MockResponseBuilder
+    private lateinit var responseBuilder: ResponseBuilder
 
     @Before
     fun setUp() {
-        responseBuilder = mock<MockResponseBuilder>()
+        responseBuilder = mock<ResponseBuilder>()
         dispatcher = FixtureDispatcher(pathPrefix, responseBuilder)
-        dispatcher.addResponse(Condition.withPathInfix("path"), "pathOnly")
-        dispatcher.addResponse(Condition.withPathInfixAndQueryParameter("path", "name"), "pathAndName")
-        dispatcher.addResponse(Condition.withPathInfixAndQueryParameter("path", "name", "value"), "pathAndNameAndValue")
+        dispatcher.putResponse(Condition.withPathInfix("path"), "pathOnly")
+        dispatcher.putResponse(Condition.withPathInfixAndQueryParameter("path", "name"), "pathAndName")
+        dispatcher.putResponse(Condition.withPathInfixAndQueryParameter("path", "name", "value"), "pathAndNameAndValue")
     }
 
     @Test
     fun `throws when no matching response found`() {
-        expectedException.expect(IllegalArgumentException::class.java)
         val url = HttpUrl.parse("http://nonexistent.invalid")!!
-        expectedException.expectMessage("Unexpected request: $url")
-        dispatcher.dispatch(url)
+        assertThatThrownBy { dispatcher.dispatch(url) }
+                .isInstanceOf(IllegalArgumentException::class.java)
+                .hasMessageContaining("Unexpected request: $url")
     }
 
     @Test
@@ -57,9 +54,9 @@ class FixtureDispatcherTest {
     @Test
     fun `throws when parameter name matches but path does not` () {
         val url = HttpUrl.parse("http://test.test/prefix/whatever?name=value")!!
-        expectedException.expectMessage("Unexpected request: $url")
-        dispatcher.dispatch(url)
-        verify(responseBuilder).buildMockResponse("pathAndNameAndValue")
+        assertThatThrownBy { dispatcher.dispatch(url) }
+                .isInstanceOf(IllegalArgumentException::class.java)
+                .hasMessageContaining("Unexpected request: $url")
     }
 
     @Test

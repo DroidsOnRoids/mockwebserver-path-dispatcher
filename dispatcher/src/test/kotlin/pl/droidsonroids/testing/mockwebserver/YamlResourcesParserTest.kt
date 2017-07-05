@@ -4,20 +4,21 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Before
 import org.junit.Test
+import java.lang.IllegalArgumentException
 
-class ResourcesParserTest {
+class YamlResourcesParserTest {
 
-    private val NON_EXISTENT_FIXTURE_NAME = "noExist"
-    private lateinit var parser: ResourcesParser
+    private val NON_EXISTENT_FIXTURE_NAME = "nonExistent"
+    private lateinit var parser: YamlResourcesParser
 
     @Before
     fun setUp() {
-        parser = ResourcesParser()
+        parser = YamlResourcesParser()
     }
 
     @Test
     fun `throws when fixture does not exist`() {
-        assertThatExceptionOfType(IllegalStateException::class.java)
+        assertThatExceptionOfType(IllegalArgumentException::class.java)
                 .isThrownBy { parser.parseFrom(NON_EXISTENT_FIXTURE_NAME) }
                 .withMessageContaining("Invalid path: ")
                 .withMessageContaining(NON_EXISTENT_FIXTURE_NAME)

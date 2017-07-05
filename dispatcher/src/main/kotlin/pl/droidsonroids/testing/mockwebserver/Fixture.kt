@@ -1,8 +1,5 @@
 package pl.droidsonroids.testing.mockwebserver
 
-/**
- * A value container that holds all information about the fixture file.
- */
 internal class Fixture {
 
     var statusCode = 0
@@ -12,8 +9,6 @@ internal class Fixture {
     var headers: List<String> = emptyList()
         internal set
 
-    internal fun hasJsonBody(): Boolean {
-        return (body?.startsWith("{") ?: false || body?.startsWith("[") ?: false)
-    }
+    internal fun hasJsonBody() = body?.isPossibleJson() ?: false
 
 }
