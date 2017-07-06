@@ -10,14 +10,12 @@ import java.util.*
  * The dispatcher using conditional fixture response mapping.
  * Use <code>putResponse(condition, responseFixtureName)</code> to create mappings.
  */
-class FixtureDispatcher internal constructor(private val pathPrefix: String,
-                                             private val responseBuilder: ResponseBuilder) : Dispatcher() {
+class FixtureDispatcher internal constructor(private val responseBuilder: ResponseBuilder) : Dispatcher() {
     /**
-     * Creates new dispatcher with optional path prefix.
+     * Creates new dispatcher.
      * Common prefix for all the mappings can be added here instead of prepending it in all the Conditions.
-     * @param pathPrefix optional path prefix (pass empty String if not needed)
      */
-    constructor(pathPrefix: String) : this(pathPrefix, MockResponseBuilder())
+    constructor() : this(MockResponseBuilder())
 
     private val responses: MutableMap<Condition, String> = TreeMap()
 
@@ -25,19 +23,9 @@ class FixtureDispatcher internal constructor(private val pathPrefix: String,
     override fun dispatch(request: RecordedRequest) = dispatch(request.requestUrl)
 
     internal fun dispatch(url: HttpUrl): MockResponse {
-        val requestPathSuffix = url.encodedPath().removePrefix(pathPrefix)
-        val requestQueryParameterNames = url.queryParameterNames()
-
         responses.forEach { (condition, fixture) ->
-            if (requestPathSuffix.startsWith(condition.pathInfix)) {
-                if (condition.queryParameterName == null) {
-                    return responseBuilder.buildMockResponse(fixture)
-                } else if (requestQueryParameterNames.contains(condition.queryParameterName)) {
-                    val requestQueryParameterValue = url.queryParameter(condition.queryParameterName)
-                    if (condition.queryParameterValue == null || condition.queryParameterValue == requestQueryParameterValue) {
-                        return responseBuilder.buildMockResponse(fixture)
-                    }
-                }
+            if (condition.isUrlMatching(url)) {
+                return responseBuilder.buildMockResponse(fixture)
             }
         }
         throw IllegalArgumentException("Unexpected request: $url")
@@ -46,9 +34,9 @@ class FixtureDispatcher internal constructor(private val pathPrefix: String,
     /**
      * Maps given <code>condition</code> to fixture named <code>responseFixtureName</code>.
      * Existing mapping of the same <code>condition</code> is overwritten.
+     * @return previous mapping or null if there is no such
      */
-    fun putResponse(condition: Condition, responseFixtureName: String) {
+    fun putResponse(condition: Condition, responseFixtureName: String) =
         responses.put(condition, responseFixtureName)
-    }
 
 }

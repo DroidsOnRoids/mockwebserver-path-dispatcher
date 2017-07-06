@@ -19,8 +19,8 @@ class FixtureDispatcherIntegrationTest {
 				.getResource("fixtures/body.txt")
 				.readText()
 
-		val dispatcher = FixtureDispatcher("/prefix/")
-		dispatcher.putResponse(Condition.withPathInfix("infix"), "body_path")
+		val dispatcher = FixtureDispatcher()
+		dispatcher.putResponse(PathQueryConditionFactory("/prefix/").withPathInfix("infix"), "body_path")
 		server.setDispatcher(dispatcher)
 
 		val httpUrl = HttpUrl.Builder()
