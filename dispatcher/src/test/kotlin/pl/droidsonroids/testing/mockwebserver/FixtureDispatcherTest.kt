@@ -7,7 +7,6 @@ import com.nhaarman.mockito_kotlin.verify
 import okhttp3.HttpUrl
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 
 class FixtureDispatcherTest {
@@ -33,6 +32,14 @@ class FixtureDispatcherTest {
         dispatcher.putResponse(mock { on { isUrlMatching(url) } doReturn true }, "response")
         dispatcher.dispatch(url)
         verify(responseBuilder).buildMockResponse("response")
+    }
+
+    @Test
+    fun `sthrows when request contains non-matching url`() {
+        dispatcher.putResponse(mock { on { isUrlMatching(url) } doReturn false }, "response")
+        assertThatThrownBy { dispatcher.dispatch(url) }
+                .isInstanceOf(IllegalArgumentException::class.java)
+                .hasMessageContaining("Unexpected request: $url")
     }
 
     @Test
