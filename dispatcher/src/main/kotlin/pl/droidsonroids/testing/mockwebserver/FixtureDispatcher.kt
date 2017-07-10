@@ -4,6 +4,7 @@ import okhttp3.HttpUrl
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
+import pl.droidsonroids.testing.mockwebserver.condition.Condition
 import java.util.*
 
 /**

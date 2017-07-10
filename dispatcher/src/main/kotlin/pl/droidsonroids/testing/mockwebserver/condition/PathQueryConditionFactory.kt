@@ -1,7 +1,9 @@
-package pl.droidsonroids.testing.mockwebserver
+package pl.droidsonroids.testing.mockwebserver.condition
 
 /**
- * TODO
+ * Factory which can be used to create similar <code>PathQueryCondition</code>s sharing the same path prefix
+ * so it does not need to be repeated each time when new <code>PathQueryCondition</code> is needed.
+ * @param pathPrefix common path prefix
  */
 class PathQueryConditionFactory(private val pathPrefix: String) {
     /**

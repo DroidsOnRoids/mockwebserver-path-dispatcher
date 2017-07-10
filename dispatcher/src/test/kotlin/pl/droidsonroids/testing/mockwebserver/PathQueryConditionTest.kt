@@ -5,6 +5,9 @@ import okhttp3.HttpUrl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
+import pl.droidsonroids.testing.mockwebserver.condition.Condition
+import pl.droidsonroids.testing.mockwebserver.condition.PathQueryCondition
+import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
 
 class PathQueryConditionTest {
     private val INFIX = "/infix"

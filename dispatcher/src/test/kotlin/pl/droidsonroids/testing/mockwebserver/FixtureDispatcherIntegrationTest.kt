@@ -7,6 +7,7 @@ import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
+import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
 
 class FixtureDispatcherIntegrationTest {
 	@get:Rule

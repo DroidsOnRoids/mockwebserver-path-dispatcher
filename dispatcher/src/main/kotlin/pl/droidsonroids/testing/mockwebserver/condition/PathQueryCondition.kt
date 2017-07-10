@@ -1,4 +1,4 @@
-package pl.droidsonroids.testing.mockwebserver
+package pl.droidsonroids.testing.mockwebserver.condition
 
 import okhttp3.HttpUrl
 
