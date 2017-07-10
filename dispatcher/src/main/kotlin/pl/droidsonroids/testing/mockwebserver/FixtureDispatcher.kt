@@ -34,7 +34,7 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
     /**
      * Maps given <code>condition</code> to fixture named <code>responseFixtureName</code>.
      * Existing mapping of the same <code>condition</code> is overwritten.
-     * @return previous mapping or null if there is no such
+     * @return previous mapping or <code>null</code> if there is no such
      */
     fun putResponse(condition: Condition, responseFixtureName: String) =
         responses.put(condition, responseFixtureName)
