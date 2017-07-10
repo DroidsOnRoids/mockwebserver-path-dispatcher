@@ -35,7 +35,7 @@ class FixtureDispatcherTest {
     }
 
     @Test
-    fun `sthrows when request contains non-matching url`() {
+    fun `throws when request contains non-matching url`() {
         dispatcher.putResponse(mock { on { isUrlMatching(url) } doReturn false }, "response")
         assertThatThrownBy { dispatcher.dispatch(url) }
                 .isInstanceOf(IllegalArgumentException::class.java)
