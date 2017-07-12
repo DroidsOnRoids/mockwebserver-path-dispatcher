@@ -4,7 +4,8 @@ import okhttp3.mockwebserver.RecordedRequest
 
 /**
  * Represents set of mocked request properties which have to match received request.
- * Conditions are checked by <code>FixtureDispatcher</code> in order defined by values returned from <code>compareTo</code>.
+ * Conditions are checked by <code>FixtureDispatcher</code> in order defined by values
+ * returned from <code>compareTo</code>.
  */
 interface Condition : Comparable<Condition> {
     /**

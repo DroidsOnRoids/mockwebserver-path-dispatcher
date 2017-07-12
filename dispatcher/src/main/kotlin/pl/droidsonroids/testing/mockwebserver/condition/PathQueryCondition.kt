@@ -4,8 +4,8 @@ import okhttp3.HttpUrl
 
 /**
  * Condition matching by URL path, optional query parameter name and optional query parameter value for that name.
- * Instances are sorted from least to most general e.g. one containing query parameter name comes before another containing
- * path only.
+ * Instances are sorted from least to most general e.g. one containing query parameter name comes before
+ * another containing path only.
  * @property path URL path, required
  * @property queryParameterName query parameter name, optional
  * @property queryParameterName query parameter value for given name, optional
