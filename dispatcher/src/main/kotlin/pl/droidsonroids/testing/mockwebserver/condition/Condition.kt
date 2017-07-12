@@ -1,6 +1,6 @@
 package pl.droidsonroids.testing.mockwebserver.condition
 
-import okhttp3.HttpUrl
+import okhttp3.mockwebserver.RecordedRequest
 
 /**
  * Represents set of mocked request properties which have to match received request.
@@ -8,8 +8,9 @@ import okhttp3.HttpUrl
  */
 interface Condition : Comparable<Condition> {
     /**
-     * @param TODO TODO
+     * Checks whether request from MockWebServer matches this condition.
+     * @param request request from MockWebServer
      * @return <code>true</code> if an argument matches this condition, <code>false</code> otherwise
      */
-    fun isUrlMatching(url: HttpUrl): Boolean
+    fun isRequestMatching(request: RecordedRequest): Boolean
 }
