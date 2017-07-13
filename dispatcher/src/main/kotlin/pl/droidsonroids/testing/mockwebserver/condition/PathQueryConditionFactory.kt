@@ -1,13 +1,15 @@
 package pl.droidsonroids.testing.mockwebserver.condition
 
 /**
- * Factory which can be used to create similar <code>PathQueryCondition</code>s sharing the same path prefix
- * so it does not need to be repeated each time when new <code>PathQueryCondition</code> is needed.
+ * Factory which can be used to create similar [PathQueryCondition]s sharing the same path prefix
+ * so it does not need to be repeated each time when new [PathQueryCondition] is needed.
  * @param pathPrefix common path prefix
+ * @constructor creates new factory with given prefix
  */
 class PathQueryConditionFactory(private val pathPrefix: String) {
     /**
-     * Creates condition with both <code>path</code>, <code>queryParameterName</code> and <code>queryParameterValue</code>.
+     * Creates condition with both <code>path</code>, <code>queryParameterName</code>
+     * and <code>queryParameterValue</code>.
      * @param pathInfix path infix, may be empty
      * @param queryParameterName query parameter name <code>queryParameterName</code>
      * @param queryParameterValue query parameter value for given

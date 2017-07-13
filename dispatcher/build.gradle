@@ -76,5 +76,16 @@ modifyPom {
 
 dokka {
     outputFormat = 'javadoc'
-    outputDirectory = "$buildDir/javadoc"
+    outputDirectory = javadoc.destinationDir
+    includes = ['extra.md']
+    linkMapping {
+        dir = "src/main/kotlin"
+        url = "https://github.com/DroidsOnRoids/mockwebserver-path-dispatcher"
+        suffix = "#L"
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: dokka) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
 }

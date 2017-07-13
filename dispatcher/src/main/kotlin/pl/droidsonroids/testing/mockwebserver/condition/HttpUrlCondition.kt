@@ -5,8 +5,8 @@ import okhttp3.mockwebserver.RecordedRequest
 
 /**
  * A Condition which matches HttpUrls only, they are extracted from request so that only
- * <code>isUrlMatching(HttpUrl)</code> needs to implemented.
- * Requests without <code>requestUrls</code> are excluded from matching.
+ * [isUrlMatching] needs to implemented.
+ * Requests without <code>requestUrl</code>s are excluded from matching.
  */
 abstract class HttpUrlCondition : Condition {
     override fun isRequestMatching(request: RecordedRequest) =
