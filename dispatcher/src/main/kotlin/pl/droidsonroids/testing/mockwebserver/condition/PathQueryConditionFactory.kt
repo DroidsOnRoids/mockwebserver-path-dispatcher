@@ -8,7 +8,8 @@ package pl.droidsonroids.testing.mockwebserver.condition
  */
 class PathQueryConditionFactory(private val pathPrefix: String) {
     /**
-     * Creates condition with both <code>path</code>, <code>queryParameterName</code> and <code>queryParameterValue</code>.
+     * Creates condition with both <code>path</code>, <code>queryParameterName</code>
+     * and <code>queryParameterValue</code>.
      * @param pathInfix path infix, may be empty
      * @param queryParameterName query parameter name <code>queryParameterName</code>
      * @param queryParameterValue query parameter value for given
