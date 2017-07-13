@@ -1,6 +1,5 @@
 package pl.droidsonroids.testing.mockwebserver
 
-import okhttp3.HttpUrl
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
@@ -21,15 +20,13 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
     private val responses: MutableMap<Condition, String> = TreeMap()
 
     @Throws(IllegalArgumentException::class)
-    override fun dispatch(request: RecordedRequest) = dispatch(request.requestUrl)
-
-    internal fun dispatch(url: HttpUrl): MockResponse {
+    override fun dispatch(request: RecordedRequest): MockResponse {
         responses.forEach { (condition, fixture) ->
-            if (condition.isUrlMatching(url)) {
+            if (condition.isRequestMatching(request)) {
                 return responseBuilder.buildMockResponse(fixture)
             }
         }
-        throw IllegalArgumentException("Unexpected request: $url")
+        throw IllegalArgumentException("Unexpected request: $request")
     }
 
     /**
