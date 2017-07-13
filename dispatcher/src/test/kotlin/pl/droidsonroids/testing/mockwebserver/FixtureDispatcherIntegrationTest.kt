@@ -11,7 +11,7 @@ import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactor
 
 class FixtureDispatcherIntegrationTest {
 	@get:Rule
-	val server = MockWebServer()
+    val mockWebServer = MockWebServer()
 
 	@Test
 	fun `response dispatched with mockwebserver`() {
@@ -22,22 +22,41 @@ class FixtureDispatcherIntegrationTest {
 
 		val dispatcher = FixtureDispatcher()
 		dispatcher.putResponse(PathQueryConditionFactory("/prefix/").withPathInfix("infix"), "body_path")
-		server.setDispatcher(dispatcher)
+        dispatcher.putResponse(PathQueryConditionFactory("/another_prefix/").withPathInfix("another_infix"), "json_object")
+        mockWebServer.setDispatcher(dispatcher)
+
+        val client = OkHttpClient()
 
 		val httpUrl = HttpUrl.Builder()
-				.host(server.hostName)
-				.port(server.port)
+                .host(mockWebServer.hostName)
+                .port(mockWebServer.port)
 				.scheme("http")
 				.encodedPath("/prefix/infix")
 				.build()
 
-		OkHttpClient().newCall(Request.Builder()
+        client.newCall(Request.Builder()
 				.url(httpUrl)
+                .build())
+                .execute()
+                .use {
+                    assertThat(it.code()).isEqualTo(404)
+                    assertThat(it.body()?.string()).isEqualToIgnoringWhitespace(expectedText)
+                }
+
+        val anotherHttpUrl = HttpUrl.Builder()
+                .host(mockWebServer.hostName)
+                .port(mockWebServer.port)
+                .scheme("http")
+                .encodedPath("/another_prefix/another_infix")
+                .build()
+
+        client.newCall(Request.Builder()
+                .url(anotherHttpUrl)
 				.build())
 				.execute()
 				.use {
-					assertThat(it.code()).isEqualTo(404)
-					assertThat(it.body()?.string()).isEqualToIgnoringWhitespace(expectedText)
+                    assertThat(it.code()).isEqualTo(200)
+                    assertThat(it.header("Content-Type") == "application/json")
 				}
 	}
 

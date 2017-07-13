@@ -1,3 +1,4 @@
+@file:JvmName("StringUtils")
 package pl.droidsonroids.testing.mockwebserver
 
 internal fun String.getResourceAsString(): String {

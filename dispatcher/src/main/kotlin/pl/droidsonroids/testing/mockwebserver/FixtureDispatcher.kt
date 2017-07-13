@@ -13,12 +13,17 @@ import java.util.*
 class FixtureDispatcher internal constructor(private val responseBuilder: ResponseBuilder) : Dispatcher() {
     /**
      * Creates new dispatcher.
-     * Common prefix for all the mappings can be added here instead of prepending it in all the Conditions.
+     * Common prefix for all the mappings can be added here instead of prepending it in all the [Condition]s.
      */
     constructor() : this(MockResponseBuilder())
 
     private val responses: MutableMap<Condition, String> = TreeMap()
 
+    /**
+     * Called by MockWebServer to determine which response should be returned for given request
+     * @param request request from MockWebServer
+     * @throws IllegalArgumentException when no requests can be matched
+     */
     @Throws(IllegalArgumentException::class)
     override fun dispatch(request: RecordedRequest): MockResponse {
         responses.forEach { (condition, fixture) ->
@@ -36,5 +41,4 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
      */
     fun putResponse(condition: Condition, responseFixtureName: String) =
         responses.put(condition, responseFixtureName)
-
 }
