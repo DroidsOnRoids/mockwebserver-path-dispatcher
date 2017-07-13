@@ -4,6 +4,7 @@ plugins {
     id 'jacoco'
     id 'org.jetbrains.kotlin.jvm' version '1.1.3-2'
     id 'org.jetbrains.dokka' version '0.9.15'
+    id 'com.bmuschko.nexus' version '2.3.1'
 }
 
 dependencies {
@@ -30,11 +31,12 @@ jacocoTestReport {
     }
 }
 
-group = GROUP
-version = VERSION
+group = POM_GROUP
+version = POM_VERSION
 
 modifyPom {
     project {
+        artifactId POM_ARTIFACT_ID
         name POM_NAME
         description POM_DESCRIPTION
         url POM_URL
@@ -79,13 +81,10 @@ dokka {
     outputDirectory = javadoc.destinationDir
     includes = ['extra.md']
     linkMapping {
-        dir = "src/main/kotlin"
-        url = "https://github.com/DroidsOnRoids/mockwebserver-path-dispatcher"
-        suffix = "#L"
+        dir = sourceSets.main.kotlin.dirs.singleFile
+        url = POM_URL
+        suffix = '#L'
     }
 }
 
-task javadocJar(type: Jar, dependsOn: dokka) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
+javadoc.dependsOn dokka
