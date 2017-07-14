@@ -1,3 +1,5 @@
+[![Javadocs](https://javadoc.io/badge/pl.droidsonroids.testing/mockwebserver-path-dispatcher.svg?color=brightgreen)](https://javadoc.io/doc/pl.droidsonroids.testing/mockwebserver-path-dispatcher)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/pl.droidsonroids.testing/mockwebserver-path-dispatcher/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/pl.droidsonroids.testing/mockwebserver-path-dispatcher)
 MockWebServer path dispatcher
 =============
 
