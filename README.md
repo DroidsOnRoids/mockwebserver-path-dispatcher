@@ -48,7 +48,8 @@ fun bareMockWebServer() {
     mockWebServer.setDispatcher(dispatcher)
 }
 ```
-###API
+
+### API
 
 `PathQueryConditionFactory` - when you want to use common URL path prefix multiple times:
 
