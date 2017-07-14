@@ -3,17 +3,11 @@ package pl.droidsonroids.testing.mockwebserver
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
-import pl.droidsonroids.testing.mockwebserver.condition.HttpUrlCondition
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
-import com.sun.corba.se.spi.presentation.rmi.StubAdapter.request
-
 
 class FixtureDispatcherIntegrationTest {
     @get:Rule

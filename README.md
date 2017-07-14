@@ -1,3 +1,5 @@
+[![Build Status](https://www.bitrise.io/app/8ee483fddb22cebf/status.svg?token=7QdiqjZqCHe-2ofGdEHdvw&branch=master)](https://www.bitrise.io/app/8ee483fddb22cebf)
+
 MockWebServer path dispatcher
 =============
 
@@ -48,7 +50,7 @@ fun bareMockWebServer() {
 ```
 ###API
 
-Conditions
+`PathQueryConditionFactory` - when you want to use common URL path prefix multiple times:
 
 ```kotlin
 fun factory() {
@@ -58,9 +60,10 @@ fun factory() {
     dispatcher.putResponse(factory.withPathInfixAndQueryParameter("infix", "param"), "response_with_query_parameter")
     dispatcher.putResponse(factory.withPathInfixAndQueryParameter("infix", "param", "value"), "response_with_query_parameter_and_value")
     mockWebServer.setDispatcher(dispatcher)
-    
 }
 ```
+
+`PathQueryCondition` - when you want to match by path and optional query parameter:
 
 ```kotlin
 fun pathQueryCondition() {
@@ -71,14 +74,43 @@ fun pathQueryCondition() {
 }
 ```
 
+`HttpUrlCondition` - when you want to match by some part of URL other than path or single query parameter:
+
 ```kotlin
 fun httpUrlCondition() {
     val dispatcher = FixtureDispatcher()
-    val factory = PathQueryConditionFactory("/prefix/")
-    dispatcher.putResponse(factory.withPathInfix("infix"), "queryless_response")
-    dispatcher.putResponse(factory.withPathInfixAndQueryParameter("another_infix", "param"), "json_object")
-    dispatcher.putResponse(factory.withPathInfixAndQueryParameter("another_infix", "param", "value"), "json_object")
-    mockWebServer.setDispatcher(dispatcher)
-    
+    val condition = object : HttpUrlCondition() {
+        override fun isUrlMatching(url: HttpUrl) = url.encodedUsername() == "foo"
+
+        override fun compareTo(other: Condition) = 0
+    }
+    dispatcher.putResponse(condition , "response_for_foo")
+    mockWebServer.setDispatcher(dispatcher)    
 }
 ```
+
+`Condition` - when you want to match by non-URL parts of the request e.g. headers:
+
+```kotlin
+fun condition() {
+    val condition = object : Condition {
+        override fun isRequestMatching(request: RecordedRequest)= request.getHeader("Content-Type") == "application/json"
+
+        override fun compareTo(other: Condition) = 0
+    }
+    dispatcher.putResponse(condition , "json_response")   
+}
+```
+
+### Download
+For unit tests:
+```gradle
+testCompile 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.0.0'
+```
+or for Android instrumentation tests:
+```gradle
+androidTestCompile 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.0.0'
+```
+
+### License
+Library uses MIT License. See [LICENSE](LICENSE) file.
