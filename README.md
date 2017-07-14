@@ -1,5 +1,3 @@
-[![Build Status](https://www.bitrise.io/app/8ee483fddb22cebf/status.svg?token=7QdiqjZqCHe-2ofGdEHdvw&branch=master)](https://www.bitrise.io/app/8ee483fddb22cebf)
-
 MockWebServer path dispatcher
 =============
 
