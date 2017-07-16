@@ -9,6 +9,7 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.CALLS_REAL_METHODS
 import java.lang.RuntimeException
+import java.net.InetAddress
 import java.net.ServerSocket
 import java.net.Socket
 
@@ -26,7 +27,7 @@ class HttpUrlConditionTest {
 	}
 
 	@Test
-	fun `request with URL checked with isUrlMatching` () {
+	fun `request with URL checked by isUrlMatching` () {
 		val captor = argumentCaptor<HttpUrl>()
 		val condition:HttpUrlCondition = mock(defaultAnswer = CALLS_REAL_METHODS)
 		whenever(condition.isUrlMatching(captor.capture())).thenReturn(true)
@@ -42,7 +43,7 @@ class HttpUrlConditionTest {
 
 		val url = captor.firstValue
 		assertThat(url.scheme()).isEqualTo("http")
-		assertThat(url.host()).isEqualTo("localhost")
+		assertThat(InetAddress.getByName(url.host())).isEqualTo(InetAddress.getByName(null))
 		assertThat(url.pathSize()).isEqualTo(1)
 	}
 
