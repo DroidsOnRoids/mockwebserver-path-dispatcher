@@ -1,14 +1,13 @@
 package pl.droidsonroids.testing.mockwebserver.condition
 
-import com.nhaarman.mockito_kotlin.*
-import com.sun.corba.se.impl.legacy.connection.DefaultSocketFactory
+import com.nhaarman.mockito_kotlin.argumentCaptor
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.RecordedRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.CALLS_REAL_METHODS
-import java.lang.RuntimeException
 import java.net.InetAddress
 import java.net.ServerSocket
 import java.net.Socket
@@ -43,7 +42,7 @@ class HttpUrlConditionTest {
 
 		val url = captor.firstValue
 		assertThat(url.scheme()).isEqualTo("http")
-		assertThat(InetAddress.getByName(url.host())).isEqualTo(InetAddress.getByName(null))
+		assertThat(InetAddress.getAllByName(null)).contains(InetAddress.getByName(url.host()))
 		assertThat(url.pathSize()).isEqualTo(1)
 	}
 
