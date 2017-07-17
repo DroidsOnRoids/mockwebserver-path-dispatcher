@@ -8,7 +8,6 @@ import okhttp3.mockwebserver.RecordedRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.mockito.Mockito.CALLS_REAL_METHODS
-import java.net.InetAddress
 import java.net.ServerSocket
 import java.net.Socket
 
