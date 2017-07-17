@@ -37,13 +37,13 @@ class HttpUrlConditionTest {
 			socket.use {
 				val request = RecordedRequest("GET / HTTP/1.1", null, null, 0, null, 0, socket)
 				assertThat(condition.isRequestMatching(request)).isTrue()
+
+				val url = captor.firstValue
+				assertThat(url.scheme()).isEqualTo("http")
+				assertThat(url.host()).isEqualTo(socket.inetAddress.hostName)
+				assertThat(url.pathSize()).isEqualTo(1)
 			}
 		}
-
-		val url = captor.firstValue
-		assertThat(url.scheme()).isEqualTo("http")
-		assertThat(InetAddress.getAllByName(null)).contains(InetAddress.getByName(url.host()))
-		assertThat(url.pathSize()).isEqualTo(1)
 	}
 
 }
