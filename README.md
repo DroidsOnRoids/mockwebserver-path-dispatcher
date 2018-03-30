@@ -4,7 +4,7 @@
 MockWebServer path dispatcher
 =============
 
-A helper for dispatching MockWebServer responses.
+A helper for dispatching MockWebServer responses. It allows to easily mock responses with data stored in YAML files in `resources/fixtures/` directory 
 
 
 ### Motivation
@@ -15,29 +15,50 @@ A helper for dispatching MockWebServer responses.
 
 ### Example
 
-Code with MockWebServer path dispatcher
+Code with MockWebServer path dispatcher:
 ```kotlin
 fun pathCondition() {
     val dispatcher = FixtureDispatcher()
+    // match all URLs with path starting with /prefix/ e.g. http://example.test/prefix/
     val factory = PathQueryConditionFactory("/prefix/")
-    dispatcher.putResponse(factory.withPathInfix("infix"), "body_path")
-    dispatcher.putResponse(factory.withPathInfix("another_infix"), "json_object")
+    // match all URLs with path ending with "suffix" and return response from fixtures/body_path.yaml
+    dispatcher.putResponse(factory.withPathSuffix("suffix"), "body_path")
+    dispatcher.putResponse(factory.withPathSuffix("another_suffix"), "json_object")
     mockWebServer.setDispatcher(dispatcher)
 }
 ```
-Code without MockWebServer path dispatcher
+Example YAML file at `resources/fixtures/json_object.yaml`:
+```yaml
+statusCode : 200
+headers:
+- 'Content-Type: application/json'
+body: >
+    {
+      "test": null
+    }
+```
+Instead of defining body in yaml directly you can specify relative path to file with body:
+```yaml
+statusCode : 404
+headers:
+- 'Content-Type: text/plain'
+- "Vary: Accept-Encoding"
+body: body.txt
+```
+
+Code without MockWebServer path dispatcher:
 ```kotlin
 fun bareMockWebServer() {
     val dispatcher = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
             val path = request.requestUrl.encodedPath()
-            if (path == "/prefix/infix") {
+            if (path == "/prefix/suffix") {
                 return MockResponse()
                         .setResponseCode(404)
                         .addHeader("Content-Type", "text/plain")
                         .addHeader("Vary", "Accept-Encoding")
                         .setBody("""{"test"}""")
-            } else if (path == "/prefix/another_infix") {
+            } else if (path == "/prefix/another_suffix") {
                 return MockResponse()
                         .setResponseCode(200)
                         .addHeader("Content-Type", "application/json")
@@ -50,6 +71,8 @@ fun bareMockWebServer() {
 }
 ```
 
+See more examples at [FunctionalTest.kt](dispatcher/src/test/kotlin/pl/droidsonroids/testing/mockwebserver/FunctionalTest.kt)
+
 ### API
 
 `PathQueryConditionFactory` - when you want to use common URL path prefix multiple times:
@@ -58,9 +81,11 @@ fun bareMockWebServer() {
 fun factory() {
     val dispatcher = FixtureDispatcher()
     val factory = PathQueryConditionFactory("/prefix/")
-    dispatcher.putResponse(factory.withPathInfix("infix"), "queryless_response")
-    dispatcher.putResponse(factory.withPathInfixAndQueryParameter("infix", "param"), "response_with_query_parameter")
-    dispatcher.putResponse(factory.withPathInfixAndQueryParameter("infix", "param", "value"), "response_with_query_parameter_and_value")
+    dispatcher.putResponse(factory.withPathSuffix("suffix"), "queryless_response")
+    // match all URLs with path ending with "suffix" and have "param" with any value as query parameter e.g. http://example.test/prefix/user/suffix?param
+    dispatcher.putResponse(factory.withPathSuffixAndQueryParameter("suffix", "param"), "response_with_query_parameter")
+    // match all URLs with path ending with "suffix" and have "param" with "value" as query parameter e.g. http://example.test/prefix/user/suffix?param=value
+    dispatcher.putResponse(factory.withPathSuffixAndQueryParameter("suffix", "param", "value"), "response_with_query_parameter_and_value")
     mockWebServer.setDispatcher(dispatcher)
 }
 ```
@@ -70,7 +95,7 @@ fun factory() {
 ```kotlin
 fun pathQueryCondition() {
     val dispatcher = FixtureDispatcher()
-    dispatcher.putResponse(PathQueryCondition("/prefix/infix", "param", "value"), "response_with_query_parameter_and_value")
+    dispatcher.putResponse(PathQueryCondition("/prefix/suffix", "param", "value"), "response_with_query_parameter_and_value")
     mockWebServer.setDispatcher(dispatcher)
     
 }
@@ -107,11 +132,11 @@ fun condition() {
 ### Download
 For unit tests:
 ```gradle
-testCompile 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.0.0'
+testImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.0'
 ```
 or for Android instrumentation tests:
 ```gradle
-androidTestCompile 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.0.0'
+androidTestImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.0'
 ```
 
 ### License

@@ -10,43 +10,43 @@ import pl.droidsonroids.testing.mockwebserver.condition.PathQueryCondition
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
 
 class PathQueryConditionTest {
-    private val INFIX = "/infix"
+    private val INFIX = "/suffix"
     private val PARAMETER_NAME = "param"
     private val PARAMETER_VALUE = "value"
 
-    private lateinit var infixPathQueryCondition: PathQueryCondition
+    private lateinit var suffixPathQueryCondition: PathQueryCondition
     private lateinit var parameterNamePathQueryCondition: PathQueryCondition
     private lateinit var parameterValuePathQueryCondition: PathQueryCondition
 
     @Before
     fun setUp() {
         val factory = PathQueryConditionFactory("")
-        infixPathQueryCondition = factory.withPathInfix(INFIX)
-        parameterNamePathQueryCondition = factory.withPathInfixAndQueryParameter(INFIX, PARAMETER_NAME)
-        parameterValuePathQueryCondition = factory.withPathInfixAndQueryParameter(INFIX, PARAMETER_NAME, PARAMETER_VALUE)
+        suffixPathQueryCondition = factory.withPathSuffix(INFIX)
+        parameterNamePathQueryCondition = factory.withPathSuffixAndQueryParameter(INFIX, PARAMETER_NAME)
+        parameterValuePathQueryCondition = factory.withPathSuffixAndQueryParameter(INFIX, PARAMETER_NAME, PARAMETER_VALUE)
     }
 
     @Test
-    fun `has correct infix`() {
-        assertThat(infixPathQueryCondition.path).isEqualTo(INFIX)
+    fun `has correct suffix`() {
+        assertThat(suffixPathQueryCondition.path).isEqualTo(INFIX)
     }
 
     @Test
-    fun `has correct infix and query parameter name`() {
+    fun `has correct suffix and query parameter name`() {
         assertThat(parameterNamePathQueryCondition.path).isEqualTo(INFIX)
         assertThat(parameterNamePathQueryCondition.queryParameterName).isEqualTo(PARAMETER_NAME)
     }
 
     @Test
-    fun `has correct infix and query parameter name and value`() {
+    fun `has correct suffix and query parameter name and value`() {
         assertThat(parameterValuePathQueryCondition.path).isEqualTo(INFIX)
         assertThat(parameterValuePathQueryCondition.queryParameterName).isEqualTo(PARAMETER_NAME)
         assertThat(parameterValuePathQueryCondition.queryParameterValue).isEqualTo(PARAMETER_VALUE)
     }
 
     @Test
-    fun `is name less than infix`() {
-        assertThat(parameterNamePathQueryCondition).isLessThan(infixPathQueryCondition)
+    fun `is name less than suffix`() {
+        assertThat(parameterNamePathQueryCondition).isLessThan(suffixPathQueryCondition)
     }
 
     @Test
@@ -55,8 +55,8 @@ class PathQueryConditionTest {
     }
 
     @Test
-    fun `is value less than infix`() {
-        assertThat(parameterValuePathQueryCondition).isLessThan(infixPathQueryCondition)
+    fun `is value less than suffix`() {
+        assertThat(parameterValuePathQueryCondition).isLessThan(suffixPathQueryCondition)
     }
 
     @Test
@@ -67,7 +67,7 @@ class PathQueryConditionTest {
     @Test
     fun `url with different path does not match`() {
         val url = HttpUrl.parse("http://test.test")!!
-        assertThat(infixPathQueryCondition.isUrlMatching(url)).isFalse()
+        assertThat(suffixPathQueryCondition.isUrlMatching(url)).isFalse()
     }
 
     @Test
@@ -77,32 +77,32 @@ class PathQueryConditionTest {
     }
 
     @Test
-    fun `url with equal infix and no query parameter matches`() {
-        val url = HttpUrl.parse("http://test.test/infix")!!
-        assertThat(infixPathQueryCondition.isUrlMatching(url)).isTrue()
+    fun `url with equal suffix and no query parameter matches`() {
+        val url = HttpUrl.parse("http://test.test/suffix")!!
+        assertThat(suffixPathQueryCondition.isUrlMatching(url)).isTrue()
     }
 
     @Test
-    fun `url with infix and query parameter name matches`() {
-        val url = HttpUrl.parse("http://test.test/infix?param")!!
+    fun `url with suffix and query parameter name matches`() {
+        val url = HttpUrl.parse("http://test.test/suffix?param")!!
         assertThat(parameterNamePathQueryCondition.isUrlMatching(url)).isTrue()
     }
 
     @Test
-    fun `url with equal infix and different query parameter name does not match`() {
-        val url = HttpUrl.parse("http://test.test/infix?param2")!!
+    fun `url with equal suffix and different query parameter name does not match`() {
+        val url = HttpUrl.parse("http://test.test/suffix?param2")!!
         assertThat(parameterNamePathQueryCondition.isUrlMatching(url)).isFalse()
     }
 
     @Test
-    fun `url with infix, query parameter name and value matches`() {
-        val url = HttpUrl.parse("http://test.test/infix?param=value")!!
+    fun `url with suffix, query parameter name and value matches`() {
+        val url = HttpUrl.parse("http://test.test/suffix?param=value")!!
         assertThat(parameterValuePathQueryCondition.isUrlMatching(url)).isTrue()
     }
 
     @Test
-    fun `url with equal infix, query parameter name with different value does not match`() {
-        val url = HttpUrl.parse("http://test.test/infix?param=value2")!!
+    fun `url with equal suffix, query parameter name with different value does not match`() {
+        val url = HttpUrl.parse("http://test.test/suffix?param=value2")!!
         assertThat(parameterValuePathQueryCondition.isUrlMatching(url)).isFalse()
     }
 }
