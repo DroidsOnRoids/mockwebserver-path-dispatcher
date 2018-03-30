@@ -132,11 +132,11 @@ fun condition() {
 ### Download
 For unit tests:
 ```gradle
-testCompile 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.0.0'
+testImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.0'
 ```
 or for Android instrumentation tests:
 ```gradle
-androidTestCompile 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.0.0'
+androidTestImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.0'
 ```
 
 ### License
