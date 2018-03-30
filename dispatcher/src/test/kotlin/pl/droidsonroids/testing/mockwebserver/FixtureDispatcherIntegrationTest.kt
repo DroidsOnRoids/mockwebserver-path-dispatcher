@@ -22,8 +22,8 @@ class FixtureDispatcherIntegrationTest {
 
 		val dispatcher = FixtureDispatcher()
         val factory = PathQueryConditionFactory("/prefix/")
-        dispatcher.putResponse(factory.withPathInfix("infix"), "body_path")
-        dispatcher.putResponse(factory.withPathInfix("another_infix"), "json_object")
+        dispatcher.putResponse(factory.withPathSuffix("suffix"), "body_path")
+        dispatcher.putResponse(factory.withPathSuffix("another_suffix"), "json_object")
         mockWebServer.setDispatcher(dispatcher)
 
         val client = OkHttpClient()
@@ -32,7 +32,7 @@ class FixtureDispatcherIntegrationTest {
                 .host(mockWebServer.hostName)
                 .port(mockWebServer.port)
                 .scheme("http")
-                .encodedPath("/prefix/infix")
+                .encodedPath("/prefix/suffix")
                 .build()
 
         client.newCall(Request.Builder()
@@ -48,7 +48,7 @@ class FixtureDispatcherIntegrationTest {
                 .host(mockWebServer.hostName)
                 .port(mockWebServer.port)
                 .scheme("http")
-                .encodedPath("/prefix/another_infix")
+                .encodedPath("/prefix/another_suffix")
                 .build()
 
         client.newCall(Request.Builder()

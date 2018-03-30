@@ -39,7 +39,7 @@ class HttpUrlConditionTest {
 
 				val url = captor.firstValue
 				assertThat(url.scheme()).isEqualTo("http")
-				assertThat(url.host()).isEqualTo(socket.inetAddress.hostName)
+				assertThat(url.host()).isEqualToIgnoringCase(socket.inetAddress.hostName)
 				assertThat(url.pathSize()).isEqualTo(1)
 			}
 		}
