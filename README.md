@@ -75,6 +75,22 @@ See more examples at [FunctionalTest.kt](dispatcher/src/test/kotlin/pl/droidsonr
 
 ### API
 
+`FixtureDispatcher` - when you want conditional fixture response mapping and enqueuing:
+
+```kotlin
+fun factory() {
+    val dispatcher = FixtureDispatcher()
+    val factory = PathQueryConditionFactory("/prefix/")
+    // bar will be served for first matching requests
+    dispatcher.enqueue(factory.withPathSuffix("suffix"), "bar")
+    // bar will be served for second matching requests
+    dispatcher.enqueue(factory.withPathSuffix("suffix"), "baz")
+    // foo will be served by default (if there is nothing enqueued) for subsequent matching requests
+    dispatcher.putResponse(factory.withPathSuffix("suffix"), "foo")    
+    mockWebServer.setDispatcher(dispatcher)
+}
+```
+
 `PathQueryConditionFactory` - when you want to use common URL path prefix multiple times:
 
 ```kotlin
@@ -140,4 +156,4 @@ androidTestImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatche
 ```
 
 ### License
-Library uses MIT License. See [LICENSE](LICENSE) file.
+Library uses the MIT License. See [LICENSE](LICENSE) file.

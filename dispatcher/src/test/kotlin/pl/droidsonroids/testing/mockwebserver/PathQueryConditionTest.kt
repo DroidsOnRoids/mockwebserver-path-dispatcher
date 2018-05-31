@@ -1,6 +1,7 @@
 package pl.droidsonroids.testing.mockwebserver
 
 import com.nhaarman.mockito_kotlin.mock
+import nl.jqno.equalsverifier.EqualsVerifier
 import okhttp3.HttpUrl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -9,11 +10,11 @@ import pl.droidsonroids.testing.mockwebserver.condition.Condition
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryCondition
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
 
-class PathQueryConditionTest {
-    private val INFIX = "/suffix"
-    private val PARAMETER_NAME = "param"
-    private val PARAMETER_VALUE = "value"
+private const val INFIX = "/suffix"
+private const val PARAMETER_NAME = "param"
+private const val PARAMETER_VALUE = "value"
 
+class PathQueryConditionTest {
     private lateinit var suffixPathQueryCondition: PathQueryCondition
     private lateinit var parameterNamePathQueryCondition: PathQueryCondition
     private lateinit var parameterValuePathQueryCondition: PathQueryCondition
@@ -60,8 +61,8 @@ class PathQueryConditionTest {
     }
 
     @Test
-    fun `is unrelated condition equal to path query condition`() {
-        assertThat(parameterValuePathQueryCondition as Condition).isEqualByComparingTo(mock<Condition>())
+    fun `is unrelated condition not equal to path query condition`() {
+        assertThat(parameterValuePathQueryCondition as Condition).isNotEqualByComparingTo(mock())
     }
 
     @Test
@@ -104,5 +105,10 @@ class PathQueryConditionTest {
     fun `url with equal suffix, query parameter name with different value does not match`() {
         val url = HttpUrl.parse("http://test.test/suffix?param=value2")!!
         assertThat(parameterValuePathQueryCondition.isUrlMatching(url)).isFalse()
+    }
+
+    @Test
+    fun `equals and hashCode match contract`() {
+        EqualsVerifier.forClass(PathQueryCondition::class.java).verify()
     }
 }
