@@ -58,6 +58,8 @@ class FunctionalTest {
             http://example.test/user/profile?name=true
         */
         dispatcher.putResponse(factory.withPathSuffix("profile"), "json_object")
+        dispatcher.enqueue(factory.withPathSuffix("profile"), "json_array")
+        dispatcher.enqueue(factory.withPathSuffix("profile"), "body_path")
 
         /*
             all URLs with path ending with profile and picture query parameter e.g.:
@@ -83,8 +85,15 @@ class FunctionalTest {
         val secondOwnEvent = "http://localhost:$port/user/events?id=2&own=true".download()
         assertThat(secondOwnEvent).isEqualTo(TEST_JSON_OBJECT)
 
-        val profile = "http://localhost:$port/user/profile".download()
-        assertThat(profile).isEqualTo(TEST_JSON_OBJECT)
+        val firstProfile = "http://localhost:$port/user/profile".download()
+        val secondProfile = "http://localhost:$port/user/profile".download()
+        val thirdProfile = "http://localhost:$port/user/profile".download()
+        val fourthProfile = "http://localhost:$port/user/profile".download()
+
+        assertThat(firstProfile).isEqualTo(TEST_JSON_ARRAY)
+        assertThat(secondProfile).isEqualTo("fixtures/body.txt".getResourceAsString())
+        assertThat(thirdProfile).isEqualTo(TEST_JSON_OBJECT)
+        assertThat(fourthProfile).isEqualTo(thirdProfile)
 
         val name = "http://localhost:$port/user/profile?name=true".download()
         assertThat(name).isEqualTo(TEST_JSON_OBJECT)

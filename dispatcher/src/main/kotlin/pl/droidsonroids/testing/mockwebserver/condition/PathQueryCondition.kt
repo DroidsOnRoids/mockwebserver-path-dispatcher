@@ -10,7 +10,7 @@ import okhttp3.HttpUrl
  * @property queryParameterName query parameter name, optional
  * @property queryParameterName query parameter value for given name, optional
  */
-class PathQueryCondition(
+data class PathQueryCondition(
     internal val path: String,
     internal val queryParameterName: String? = null,
     internal val queryParameterValue: String? = null
@@ -18,7 +18,7 @@ class PathQueryCondition(
 
     override fun compareTo(other: Condition) = when {
         other is PathQueryCondition && score > other.score -> -1
-        other !is PathQueryCondition -> 0
+        other == this -> 0
         else -> 1
     }
 

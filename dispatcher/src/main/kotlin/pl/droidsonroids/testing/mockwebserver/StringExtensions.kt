@@ -1,4 +1,5 @@
 @file:JvmName("StringUtils")
+
 package pl.droidsonroids.testing.mockwebserver
 
 internal fun String.getResourceAsString(): String {
@@ -9,5 +10,5 @@ internal fun String.getResourceAsString(): String {
 internal fun String.isPossibleJson(): Boolean {
     val firstOrganicChar = trimStart().firstOrNull()
     val lastOrganicChar = trimEnd().lastOrNull()
-    return (firstOrganicChar == '{' && lastOrganicChar == '}') || firstOrganicChar == '[' && lastOrganicChar == ']'
+    return (firstOrganicChar == '{' && lastOrganicChar == '}') || (firstOrganicChar == '[' && lastOrganicChar == ']')
 }

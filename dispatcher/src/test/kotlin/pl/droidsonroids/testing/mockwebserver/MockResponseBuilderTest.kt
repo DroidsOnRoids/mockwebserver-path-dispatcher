@@ -15,7 +15,7 @@ internal class MockResponseBuilderTest {
     @Before
     fun setUp() {
         fixture = Fixture()
-        builder = MockResponseBuilder(mock<ResourcesParser> {
+        builder = MockResponseBuilder(mock {
             on { parseFrom(any()) } doReturn fixture
         })
     }

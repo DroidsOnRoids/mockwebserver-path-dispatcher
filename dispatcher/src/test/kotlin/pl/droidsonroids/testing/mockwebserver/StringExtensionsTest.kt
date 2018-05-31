@@ -43,6 +43,7 @@ class StringExtensionsTest {
     @Test
     fun `non-matching braces are not json`() {
         assertThat("[}".isPossibleJson()).isFalse()
+        assertThat("{]".isPossibleJson()).isFalse()
         assertThat("}{".isPossibleJson()).isFalse()
         assertThat("}".isPossibleJson()).isFalse()
         assertThat("]".isPossibleJson()).isFalse()
@@ -54,6 +55,10 @@ class StringExtensionsTest {
         assertThat("".isPossibleJson()).isFalse()
         assertThat(" ".isPossibleJson()).isFalse()
         assertThat("test".isPossibleJson()).isFalse()
+        assertThat("{a".isPossibleJson()).isFalse()
+        assertThat("[a".isPossibleJson()).isFalse()
+        assertThat("a}".isPossibleJson()).isFalse()
+        assertThat("a[".isPossibleJson()).isFalse()
     }
 
 }
