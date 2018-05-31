@@ -12,11 +12,11 @@ import org.junit.Test
 class FixtureDispatcherTest {
     private lateinit var dispatcher: FixtureDispatcher
     private lateinit var responseBuilder: ResponseBuilder
-    val request = RecordedRequest(null, null, null, 0, null, 0, null)
+    private val request = RecordedRequest(null, null, null, 0, null, 0, null)
 
     @Before
     fun setUp() {
-        responseBuilder = mock<ResponseBuilder>()
+        responseBuilder = mock()
         dispatcher = FixtureDispatcher(responseBuilder)
     }
 

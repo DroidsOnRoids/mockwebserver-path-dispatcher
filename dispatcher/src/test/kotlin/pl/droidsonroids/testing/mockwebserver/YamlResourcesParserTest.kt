@@ -6,9 +6,9 @@ import org.junit.Before
 import org.junit.Test
 import java.lang.IllegalArgumentException
 
-class YamlResourcesParserTest {
+private const val NON_EXISTENT_FIXTURE_NAME = "nonExistent"
 
-    private val NON_EXISTENT_FIXTURE_NAME = "nonExistent"
+class YamlResourcesParserTest {
     private lateinit var parser: YamlResourcesParser
 
     @Before

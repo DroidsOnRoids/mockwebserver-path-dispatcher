@@ -22,13 +22,14 @@ class FixtureDispatcherIntegrationTest {
 
 		val dispatcher = FixtureDispatcher()
         val factory = PathQueryConditionFactory("/prefix/")
+        dispatcher.enqueue(factory.withPathSuffix("suffix"), "json_array")
         dispatcher.putResponse(factory.withPathSuffix("suffix"), "body_path")
         dispatcher.putResponse(factory.withPathSuffix("another_suffix"), "json_object")
         mockWebServer.setDispatcher(dispatcher)
 
         val client = OkHttpClient()
 
-        val httpUrl = HttpUrl.Builder()
+        val httpUrlWithSuffix = HttpUrl.Builder()
                 .host(mockWebServer.hostName)
                 .port(mockWebServer.port)
                 .scheme("http")
@@ -36,7 +37,18 @@ class FixtureDispatcherIntegrationTest {
                 .build()
 
         client.newCall(Request.Builder()
-                .url(httpUrl)
+            .url(httpUrlWithSuffix)
+            .build()
+        )
+            .execute()
+            .use {
+                assertThat(it.code()).isEqualTo(400)
+                assertThat(it.body()?.string()).isEqualToIgnoringWhitespace("[ ]")
+            }
+
+        client.newCall(
+            Request.Builder()
+                .url(httpUrlWithSuffix)
                 .build())
                 .execute()
                 .use {
@@ -44,7 +56,7 @@ class FixtureDispatcherIntegrationTest {
                     assertThat(it.body()?.string()).isEqualToIgnoringWhitespace(expectedText)
                 }
 
-        val anotherHttpUrl = HttpUrl.Builder()
+        val httpUrlWithAnotherSuffix = HttpUrl.Builder()
                 .host(mockWebServer.hostName)
                 .port(mockWebServer.port)
                 .scheme("http")
@@ -52,7 +64,7 @@ class FixtureDispatcherIntegrationTest {
                 .build()
 
         client.newCall(Request.Builder()
-                .url(anotherHttpUrl)
+            .url(httpUrlWithAnotherSuffix)
                 .build())
                 .execute()
                 .use {
