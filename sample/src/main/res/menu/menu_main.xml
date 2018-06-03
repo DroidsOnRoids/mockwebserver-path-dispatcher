@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--Not used for now due to graph API change - removed possibility to check attend status-->
+    <item
+        android:id="@+id/menuItemLogin"
+        android:icon="@drawable/ic_login"
+        android:orderInCategory="0"
+        android:title="@string/log_in"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menuItemLogout"
+        android:icon="@drawable/ic_logout"
+        android:orderInCategory="0"
+        android:title="@string/log_out"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menuItemAbout"
+        android:icon="@drawable/ic_about"
+        android:orderInCategory="1"
+        android:title="@string/about_app"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/settings"
+        android:orderInCategory="0"
+        android:title="@string/action_settings"
+        app:showAsAction="never"/>
+</menu>

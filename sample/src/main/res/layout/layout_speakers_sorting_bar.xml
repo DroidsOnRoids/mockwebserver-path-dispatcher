@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="sortingViewModel"
+            type="pl.droidsonroids.toast.viewmodels.speaker.SpeakersViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:id="@+id/sortingBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@color/paleGrayBackground"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/titleSortingLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@color/paleGrayBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/sorting_title_layout_ripple"
+            android:onClick="@{() -> sortingViewModel.toggleSortingDetailsVisibility()}">
+
+            <View
+                android:id="@+id/sortTitleDivider"
+                android:layout_width="1dp"
+                android:layout_height="42dp"
+                android:background="@color/paleGray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/arrowDownImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/ic_arrow_down"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/sortText"
+                style="@style/SortLayoutStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:text="@string/sort"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/arrowDownImage"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/titleAlphabeticalSortImage"
+                android:layout_width="@dimen/sorting_images_size"
+                android:layout_height="@dimen/sorting_images_size"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="2dp"
+                android:src="@{sortingViewModel.sortingType}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/sortText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+            android:id="@+id/sortTopBarDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/paleGray"/>
+
+    </LinearLayout>
+</layout>

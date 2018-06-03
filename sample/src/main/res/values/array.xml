@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="contact_topics">
+        <item>@string/i_want_to</item>
+        <item>@string/speak_on_the_next_event</item>
+        <item>@string/claim_a_reward</item>
+        <item>@string/become_a_partner</item>
+    </string-array>
+    <string-array name="event_reminder_time">
+        <item>@string/event_reminder_hour</item>
+        <item>@string/event_reminder_two_hours</item>
+        <item>@string/event_reminder_day</item>
+    </string-array>
+    <string-array name="event_reminder_time_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>24</item>
+    </string-array>
+</resources>
