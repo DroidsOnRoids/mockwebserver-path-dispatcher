@@ -112,7 +112,7 @@ class AppModule {
 
     private fun getRetrofitBuilder(httpClient: OkHttpClient) =
             Retrofit.Builder()
-                    .baseUrl(baseUrl)
+                    .baseUrl(BuildConfig.BASE_API_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .client(httpClient)

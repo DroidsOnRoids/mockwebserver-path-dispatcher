@@ -13,7 +13,7 @@ class MockContactScreenTest {
     @Rule
     val activityRule = IntentsTestRule(MainActivity::class.java, true, false)
 
-    val mockWebServer = MockWebServer()
+    private val mockWebServer = MockWebServer()
 
     @Before
     fun setUp() {

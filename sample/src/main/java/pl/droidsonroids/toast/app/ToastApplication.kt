@@ -43,8 +43,8 @@ class ToastApplication : Application(), HasActivityInjector, HasServiceInjector 
         setupDagger()
         setupTimber()
         setupCrashlytics()
-        setupRemoteConfig()
-        setupFcmSubscriptionManager()
+//        setupRemoteConfig()
+//        setupFcmSubscriptionManager()
     }
 
     private fun setupDagger() {

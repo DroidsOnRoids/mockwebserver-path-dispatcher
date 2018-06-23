@@ -70,7 +70,7 @@ class MainActivity : BaseActivity() {
         setupNavigationView()
         initHomeFragmentTransaction(showEventsFragment = savedInstanceState == null)
         setupViewModel(mainBinding)
-        fetchRemoteConfig()
+//        fetchRemoteConfig()
     }
 
     private fun fetchRemoteConfig() {

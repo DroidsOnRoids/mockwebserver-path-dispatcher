@@ -3,7 +3,7 @@ buildscript {
         //    add versions that occur at least twice
         versions = [
                 buildTools: "27.0.3",
-                kotlin    : "1.2.30",
+                kotlin    : "1.2.41",
                 support   : "27.0.2",
                 dagger    : "2.14.1",
                 retrofit  : "2.3.0",
@@ -117,9 +117,7 @@ android {
             signingConfig signingConfigs.debug
         }
         debug {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-debug-rules.pro', 'proguard-rules.pro'
-            testProguardFiles 'proguard-ui-testing-rules.pro'
+            multiDexEnabled true
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             signingConfig signingConfigs.debug
@@ -173,7 +171,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     // rxjava
     implementation "io.reactivex.rxjava2:rxkotlin:2.1.0"
