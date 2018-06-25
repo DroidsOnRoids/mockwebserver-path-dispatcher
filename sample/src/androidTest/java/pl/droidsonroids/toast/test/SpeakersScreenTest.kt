@@ -1,8 +1,13 @@
 package pl.droidsonroids.toast.test
 
 import android.support.test.rule.ActivityTestRule
+import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import pl.droidsonroids.testing.mockwebserver.FixtureDispatcher
+import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
 import pl.droidsonroids.toast.R
 import pl.droidsonroids.toast.app.home.MainActivity
 import pl.droidsonroids.toast.function.getString
@@ -11,7 +16,21 @@ import pl.droidsonroids.toast.robot.SpeakersRobot
 class SpeakersScreenTest {
     @JvmField
     @Rule
-    val activityRule = ActivityTestRule(MainActivity::class.java, true, true)
+    val activityRule = ActivityTestRule(MainActivity::class.java, true, false)
+
+    private val mockWebServer = MockWebServer()
+
+    @Before
+    fun setUp() {
+        setPathDispatcher()
+        mockWebServer.start(12345)
+        activityRule.launchActivity(null)
+    }
+
+    @After
+    fun tearDown() {
+        mockWebServer.shutdown()
+    }
 
     @Test
     fun isToolbarDisplayed() {
@@ -89,5 +108,15 @@ class SpeakersScreenTest {
             checkIfElementWithIdIsDisplayed(R.id.dateSortImage)
             checkIfTextIsCorrect(getString(R.string.date), R.id.dateText)
         }
+    }
+
+    private fun setPathDispatcher() {
+        val dispatcher = FixtureDispatcher()
+        val factory = PathQueryConditionFactory("")
+        dispatcher.putResponse(factory.withPathSuffix("/events"), "events17_200")
+        dispatcher.putResponse(factory.withPathSuffix("/events/17"), "event17_200")
+        dispatcher.putResponse(factory.withPathSuffix("/speakers"), "speakers_200")
+        dispatcher.putResponse(factory.withPathSuffix("/speakers/16"), "speakers16_200")
+        mockWebServer.setDispatcher(dispatcher)
     }
 }
