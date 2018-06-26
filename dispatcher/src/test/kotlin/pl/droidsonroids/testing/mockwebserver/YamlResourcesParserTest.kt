@@ -33,6 +33,14 @@ class YamlResourcesParserTest {
     }
 
     @Test
+    fun `sanitizes extended unicode`() {
+        val fixture = parser.parseFrom("unescaped_unicode")
+        assertThat(fixture.statusCode).isEqualTo(200)
+        assertThat(fixture.headers).containsOnly("Content-Type: application/json")
+        assertThat(fixture.body).isEqualToIgnoringWhitespace("""{"test": "\uD83D\uDC31"}""")
+    }
+
+    @Test
     fun `parses json array`() {
         val fixture = parser.parseFrom("json_array")
         assertThat(fixture.statusCode).isEqualTo(400)
