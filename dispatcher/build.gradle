@@ -2,13 +2,13 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id 'jacoco'
-    id 'org.jetbrains.kotlin.jvm' version '1.2.41'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.50'
     id 'org.jetbrains.dokka' version '0.9.17'
     id 'com.bmuschko.nexus' version '2.3.1'
 }
 
 dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.41'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.50'
     implementation 'com.squareup.okhttp3:mockwebserver:3.10.0'
     implementation 'org.apache.commons:commons-text:1.4'
     implementation 'pl.droidsonroids.yaml:snakeyaml:1.18-android'
@@ -16,9 +16,9 @@ dependencies {
     testImplementation('com.nhaarman:mockito-kotlin-kt1.1:1.5.0') {
         exclude group: 'org.jetbrains.kotlin'
     }
-    testImplementation 'org.mockito:mockito-core:2.18.3'
+    testImplementation 'org.mockito:mockito-core:2.19.0'
     testImplementation 'junit:junit:4.12'
-    testImplementation 'nl.jqno.equalsverifier:equalsverifier:2.4.6'
+    testImplementation 'nl.jqno.equalsverifier:equalsverifier:2.4.7'
 }
 
 jacoco {
