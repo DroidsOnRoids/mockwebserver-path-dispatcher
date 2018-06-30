@@ -1,4 +1,4 @@
-### 1.1.1 - not released yet
+### 1.1.1
 - Add enqueued responses support to `FixtureDispatcher`
 - Add YAML sanitizing - if raw extended Unicode character (>=U+D800) is found it will be escaped
 - Update dependencies versions
