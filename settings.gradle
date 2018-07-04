@@ -1,1 +1,2 @@
 include ':dispatcher'
+project(':dispatcher').name = POM_ARTIFACT_ID
