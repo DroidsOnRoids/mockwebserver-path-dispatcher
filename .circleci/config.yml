@@ -15,7 +15,7 @@ jobs:
           name: Run Tests
           command: ./gradlew check
       - store_artifacts:
-          path: app/build/reports
+          path: dispatcher/build/reports
           destination: reports
       - store_test_results:
-          path: app/build/test-results
+          path: dispatcher/build/test-results
