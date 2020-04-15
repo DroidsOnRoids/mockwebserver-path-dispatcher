@@ -11,6 +11,7 @@ import okio.Buffer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.mockito.Mockito.CALLS_REAL_METHODS
+import java.net.InetAddress
 import java.net.ServerSocket
 import java.net.Socket
 
@@ -42,27 +43,28 @@ class HttpUrlConditionTest {
 		val condition: HttpUrlCondition = mock(defaultAnswer = CALLS_REAL_METHODS)
 		whenever(condition.isUrlMatching(captor.capture())).thenReturn(true)
 
-		val serverSocket = ServerSocket(0)
-		serverSocket.use {
-			val socket = Socket(serverSocket.inetAddress, serverSocket.localPort)
-			socket.use {
-				val request = RecordedRequest(
-					requestLine = "GET / HTTP/1.1",
-					headers = emptyMap<String, String>().toHeaders(),
-					chunkSizes = emptyList(),
-					bodySize = 0,
-					body = Buffer(),
-					sequenceNumber = 0,
-					socket = it,
-					failure = null
-				)
-				assertThat(condition.isRequestMatching(request)).isTrue()
+		val inetAddress: InetAddress = InetAddress.getByName("127.0.0.1")
+		val socket = mock<Socket>()
+		whenever(socket.inetAddress).thenReturn(inetAddress)
+		whenever(socket.localAddress).thenReturn(inetAddress)
+		whenever(socket.localPort).thenReturn(80)
+		socket.use {
+			val request = RecordedRequest(
+				requestLine = "GET / HTTP/1.1",
+				headers = emptyMap<String, String>().toHeaders(),
+				chunkSizes = emptyList(),
+				bodySize = 0,
+				body = Buffer(),
+				sequenceNumber = 0,
+				socket = it,
+				failure = null
+			)
+			assertThat(condition.isRequestMatching(request)).isTrue()
 
-				val url = captor.firstValue
-				assertThat(url.scheme).isEqualTo("http")
-				assertThat(url.host).isEqualToIgnoringCase(socket.inetAddress.hostAddress)
-				assertThat(url.pathSize).isEqualTo(1)
-			}
+			val url = captor.firstValue
+			assertThat(url.scheme).isEqualTo("http")
+			assertThat(url.host).isEqualToIgnoringCase("localhost")
+			assertThat(url.pathSize).isEqualTo(1)
 		}
 	}
 
