@@ -1,8 +1,8 @@
 package pl.droidsonroids.testing.mockwebserver
 
-import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockitokotlin2.mock
 import nl.jqno.equalsverifier.EqualsVerifier
-import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -67,43 +67,43 @@ class PathQueryConditionTest {
 
     @Test
     fun `url with different path does not match`() {
-        val url = HttpUrl.parse("http://test.test")!!
+        val url = "http://test.test".toHttpUrlOrNull()!!
         assertThat(suffixPathQueryCondition.isUrlMatching(url)).isFalse()
     }
 
     @Test
     fun `url with different query does not match`() {
-        val url = HttpUrl.parse("http://test.test?another")!!
+        val url = "http://test.test?another".toHttpUrlOrNull()!!
         assertThat(parameterNamePathQueryCondition.isUrlMatching(url)).isFalse()
     }
 
     @Test
     fun `url with equal suffix and no query parameter matches`() {
-        val url = HttpUrl.parse("http://test.test/suffix")!!
+        val url = "http://test.test/suffix".toHttpUrlOrNull()!!
         assertThat(suffixPathQueryCondition.isUrlMatching(url)).isTrue()
     }
 
     @Test
     fun `url with suffix and query parameter name matches`() {
-        val url = HttpUrl.parse("http://test.test/suffix?param")!!
+        val url = "http://test.test/suffix?param".toHttpUrlOrNull()!!
         assertThat(parameterNamePathQueryCondition.isUrlMatching(url)).isTrue()
     }
 
     @Test
     fun `url with equal suffix and different query parameter name does not match`() {
-        val url = HttpUrl.parse("http://test.test/suffix?param2")!!
+        val url = "http://test.test/suffix?param2".toHttpUrlOrNull()!!
         assertThat(parameterNamePathQueryCondition.isUrlMatching(url)).isFalse()
     }
 
     @Test
     fun `url with suffix, query parameter name and value matches`() {
-        val url = HttpUrl.parse("http://test.test/suffix?param=value")!!
+        val url = "http://test.test/suffix?param=value".toHttpUrlOrNull()!!
         assertThat(parameterValuePathQueryCondition.isUrlMatching(url)).isTrue()
     }
 
     @Test
     fun `url with equal suffix, query parameter name with different value does not match`() {
-        val url = HttpUrl.parse("http://test.test/suffix?param=value2")!!
+        val url = "http://test.test/suffix?param=value2".toHttpUrlOrNull()!!
         assertThat(parameterValuePathQueryCondition.isUrlMatching(url)).isFalse()
     }
 

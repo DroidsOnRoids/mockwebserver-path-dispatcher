@@ -1,18 +1,30 @@
 package pl.droidsonroids.testing.mockwebserver
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import okhttp3.Headers
 import okhttp3.mockwebserver.RecordedRequest
+import okio.Buffer
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Before
 import org.junit.Test
+import java.net.Socket
 
 class FixtureDispatcherTest {
     private lateinit var dispatcher: FixtureDispatcher
     private lateinit var responseBuilder: ResponseBuilder
-    private val request = RecordedRequest(null, null, null, 0, null, 0, null)
+    private val request = RecordedRequest(
+        requestLine = "",
+        headers = Headers.headersOf(),
+        chunkSizes = emptyList(),
+        bodySize = 0,
+        body = Buffer(),
+        sequenceNumber = 0,
+        socket = Socket(),
+        failure = null
+    )
 
     @Before
     fun setUp() {

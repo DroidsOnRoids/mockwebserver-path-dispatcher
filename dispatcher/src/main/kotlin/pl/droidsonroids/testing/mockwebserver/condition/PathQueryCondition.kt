@@ -22,9 +22,12 @@ data class PathQueryCondition(
         else -> 1
     }
 
-    override fun isUrlMatching(url: HttpUrl): Boolean {
-        val requestQueryParameterNames = url.queryParameterNames()
-        if (url.encodedPath() == path) {
+    override fun isUrlMatching(url: HttpUrl?): Boolean {
+        if (url == null) {
+            return false
+        }
+        val requestQueryParameterNames = url.queryParameterNames
+        if (url.encodedPath == path) {
             when {
                 queryParameterName == null -> return true
                 requestQueryParameterNames.contains(queryParameterName) -> {

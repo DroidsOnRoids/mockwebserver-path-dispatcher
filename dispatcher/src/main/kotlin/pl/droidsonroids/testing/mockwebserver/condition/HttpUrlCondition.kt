@@ -19,5 +19,5 @@ abstract class HttpUrlCondition : Condition {
      * @param url a URL extracted from request, never null
      * @return <code>true</code> if an argument matches this condition, <code>false</code> otherwise
      */
-    abstract fun isUrlMatching(url: HttpUrl): Boolean
+    abstract fun isUrlMatching(url: HttpUrl?): Boolean
 }

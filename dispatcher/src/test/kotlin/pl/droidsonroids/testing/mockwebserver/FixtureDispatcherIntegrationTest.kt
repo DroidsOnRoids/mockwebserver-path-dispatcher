@@ -25,7 +25,7 @@ class FixtureDispatcherIntegrationTest {
         dispatcher.enqueue(factory.withPathSuffix("suffix"), "json_array")
         dispatcher.putResponse(factory.withPathSuffix("suffix"), "body_path")
         dispatcher.putResponse(factory.withPathSuffix("another_suffix"), "json_object")
-        mockWebServer.setDispatcher(dispatcher)
+        mockWebServer.dispatcher = dispatcher
 
         val client = OkHttpClient()
 
@@ -42,8 +42,8 @@ class FixtureDispatcherIntegrationTest {
         )
             .execute()
             .use {
-                assertThat(it.code()).isEqualTo(400)
-                assertThat(it.body()?.string()).isEqualToIgnoringWhitespace("[ ]")
+                assertThat(it.code).isEqualTo(400)
+                assertThat(it.body?.string()).isEqualToIgnoringWhitespace("[ ]")
             }
 
         client.newCall(
@@ -52,8 +52,8 @@ class FixtureDispatcherIntegrationTest {
                 .build())
                 .execute()
                 .use {
-                    assertThat(it.code()).isEqualTo(404)
-                    assertThat(it.body()?.string()).isEqualToIgnoringWhitespace(expectedText)
+                    assertThat(it.code).isEqualTo(404)
+                    assertThat(it.body?.string()).isEqualToIgnoringWhitespace(expectedText)
                 }
 
         val httpUrlWithAnotherSuffix = HttpUrl.Builder()
@@ -68,7 +68,7 @@ class FixtureDispatcherIntegrationTest {
                 .build())
                 .execute()
                 .use {
-                    assertThat(it.code()).isEqualTo(200)
+                    assertThat(it.code).isEqualTo(200)
                     assertThat(it.header("Content-Type") == "application/json")
                 }
     }
