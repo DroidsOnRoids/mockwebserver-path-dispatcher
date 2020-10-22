@@ -4,6 +4,8 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
 import pl.droidsonroids.testing.mockwebserver.condition.Condition
+import pl.droidsonroids.testing.mockwebserver.condition.HttpUrlCondition
+import pl.droidsonroids.testing.mockwebserver.condition.MultipleQueryPathCondition
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryCondition
 import java.util.*
 
@@ -62,9 +64,31 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
      * given <code>condition</code>. Each enqueued fixture will be returned at most once however,
      * more of them can be enqueued for the same condition.
      */
-    fun enqueue(condition: PathQueryCondition, responseFixtureName: String) {
+    fun enqueue(condition: PathQueryCondition, responseFixtureName: String) =
+        enqueue(condition as HttpUrlCondition, responseFixtureName)
+
+    fun enqueue(
+        pathAndResponse: Pair<String, String>,
+        vararg queryParameterNameAndValue: Pair<String, String>
+    ) {
+        val condition = MultipleQueryPathCondition(
+            pathAndResponse.first,
+            *queryParameterNameAndValue
+        )
+        enqueue(condition, pathAndResponse.second)
+    }
+
+    fun enqueue(pathAndResponse: Pair<String, String>, queryParameters: Map<String, String>) {
+        val condition = MultipleQueryPathCondition(
+            pathAndResponse.first,
+            queryParameters
+        )
+        enqueue(condition, pathAndResponse.second)
+    }
+
+    private fun enqueue(condition: HttpUrlCondition, responseName: String) {
         val fixtures = queuedResponses[condition] ?: ArrayDeque()
-        fixtures += responseFixtureName
+        fixtures += responseName
         queuedResponses[condition] = fixtures
     }
 }
