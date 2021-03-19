@@ -17,7 +17,9 @@ private const val TEST_JSON_ARRAY = "[ ]"
 
 class FunctionalTest {
 
-    @JvmField @Rule val mockWebServer = MockWebServer()
+    @JvmField
+    @Rule
+    val mockWebServer = MockWebServer()
 
     private var port: Int = 0
     private lateinit var client: OkHttpClient
@@ -68,7 +70,7 @@ class FunctionalTest {
         */
         dispatcher.putResponse(factory.withPathSuffixAndQueryParameter("profile", "picture"), "json_array")
 
-        mockWebServer.setDispatcher(dispatcher)
+        mockWebServer.dispatcher = dispatcher
 
         val events = "http://localhost:$port/user/events".download()
         assertThat(events).isEqualTo("fixtures/body.txt".getResourceAsString())
@@ -124,10 +126,10 @@ class FunctionalTest {
     }
 
     private fun String.download() = client.newCall(
-        requestBuilder.url(this)
-            .get()
-            .build()
+            requestBuilder.url(this)
+                    .get()
+                    .build()
     ).execute()
-        .body()
-        ?.string()
+            .body
+            ?.string()
 }

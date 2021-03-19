@@ -26,7 +26,7 @@ internal class MockResponseBuilderTest {
         fixture.body = body
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.status).contains("200")
-        assertThat(mockResponse.body.readUtf8()).isEqualTo(body)
+        assertThat(mockResponse.getBody()?.readUtf8()).isEqualTo(body)
     }
 
     @Test
@@ -35,7 +35,7 @@ internal class MockResponseBuilderTest {
         fixture.headers = listOf("name:value", "name2:value2")
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.status).contains("400")
-        assertThat(mockResponse.body).isNull()
+        assertThat(mockResponse.getBody()).isNull()
         assertThat(mockResponse.headers["name"]).isEqualTo("value")
         assertThat(mockResponse.headers["name2"]).isEqualTo("value2")
     }
