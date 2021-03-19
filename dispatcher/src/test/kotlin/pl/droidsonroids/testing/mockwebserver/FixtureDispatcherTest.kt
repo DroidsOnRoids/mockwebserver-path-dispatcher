@@ -4,15 +4,18 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
+import okhttp3.Headers
 import okhttp3.mockwebserver.RecordedRequest
+import okio.Buffer
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Before
 import org.junit.Test
+import java.net.Socket
 
 class FixtureDispatcherTest {
     private lateinit var dispatcher: FixtureDispatcher
     private lateinit var responseBuilder: ResponseBuilder
-    private val request = RecordedRequest(null, null, null, 0, null, 0, null)
+    private val request = RecordedRequest("", Headers.headersOf(), emptyList(), 0, Buffer(), 0, Socket())
 
     @Before
     fun setUp() {

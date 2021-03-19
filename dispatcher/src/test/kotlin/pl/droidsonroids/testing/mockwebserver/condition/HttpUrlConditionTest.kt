@@ -3,8 +3,10 @@ package pl.droidsonroids.testing.mockwebserver.condition
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
+import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.RecordedRequest
+import okio.Buffer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.mockito.Mockito.CALLS_REAL_METHODS
@@ -19,7 +21,7 @@ class HttpUrlConditionTest {
 			override fun isUrlMatching(url: HttpUrl) = true
 			override fun compareTo(other: Condition) = 0
 		}
-		val request = RecordedRequest(null, null, null, 0, null, 0, null)
+		val request = RecordedRequest("", Headers.headersOf(), emptyList(), 0, Buffer(), 0, Socket())
 
 		assertThat(matchAllUrlCondition.isRequestMatching(request))
 	}
@@ -34,13 +36,13 @@ class HttpUrlConditionTest {
 		serverSocket.use {
 			val socket = Socket(serverSocket.inetAddress, serverSocket.localPort)
 			socket.use {
-				val request = RecordedRequest("GET / HTTP/1.1", null, null, 0, null, 0, socket)
-				assertThat(condition.isRequestMatching(request)).isTrue()
+				val request = RecordedRequest("GET / HTTP/1.1", Headers.headersOf(), emptyList(), 0, Buffer(), 0, Socket())
+				assertThat(condition.isRequestMatching(request)).isTrue
 
 				val url = captor.firstValue
-				assertThat(url.scheme()).isEqualTo("http")
-				assertThat(url.host()).isEqualToIgnoringCase(socket.inetAddress.hostName)
-				assertThat(url.pathSize()).isEqualTo(1)
+				assertThat(url.scheme).isEqualTo("http")
+				assertThat(url.host).isEqualToIgnoringCase(socket.inetAddress.hostName)
+				assertThat(url.pathSize).isEqualTo(1)
 			}
 		}
 	}

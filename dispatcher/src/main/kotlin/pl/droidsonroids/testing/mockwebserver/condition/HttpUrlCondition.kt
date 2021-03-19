@@ -10,9 +10,9 @@ import okhttp3.mockwebserver.RecordedRequest
  */
 abstract class HttpUrlCondition : Condition {
     override fun isRequestMatching(request: RecordedRequest) =
-            when (request.requestUrl) {
+            when (val url = request.requestUrl) {
                 null -> false
-                else -> isUrlMatching(request.requestUrl)
+                else -> isUrlMatching(url)
             }
 
     /**

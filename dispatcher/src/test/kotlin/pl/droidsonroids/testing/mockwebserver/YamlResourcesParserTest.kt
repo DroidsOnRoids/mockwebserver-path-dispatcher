@@ -57,6 +57,14 @@ class YamlResourcesParserTest {
     }
 
     @Test
+    fun `parses response without body`() {
+        val fixture = parser.parseFrom("no_body")
+        assertThat(fixture.statusCode).isEqualTo(204)
+        assertThat(fixture.headers).containsExactlyInAnyOrder("Content-Type: text/plain", "Vary: Accept-Encoding")
+        assertThat(fixture.body).isNull()
+    }
+
+    @Test
     fun `throws when yaml is malformed`() {
         assertThatExceptionOfType(Throwable::class.java)
                 .isThrownBy { parser.parseFrom("malformed") }
