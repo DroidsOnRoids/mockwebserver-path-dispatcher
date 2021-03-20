@@ -22,43 +22,43 @@ class StringExtensionsTest {
 
     @Test
     fun `json object is json`() {
-        assertThat("{}".isPossibleJson()).isTrue()
+        assertThat("{}".isPossibleJson()).isTrue
     }
 
     @Test
     fun `json array is json`() {
-        assertThat("[]".isPossibleJson()).isTrue()
+        assertThat("[]".isPossibleJson()).isTrue
     }
 
     @Test
     fun `non-trimmed json object is json`() {
-        assertThat(" { } ".isPossibleJson()).isTrue()
+        assertThat(" { } ".isPossibleJson()).isTrue
     }
 
     @Test
     fun `non-trimmed json array is json`() {
-        assertThat(" [ ] ".isPossibleJson()).isTrue()
+        assertThat(" [ ] ".isPossibleJson()).isTrue
     }
 
     @Test
     fun `non-matching braces are not json`() {
-        assertThat("[}".isPossibleJson()).isFalse()
-        assertThat("{]".isPossibleJson()).isFalse()
-        assertThat("}{".isPossibleJson()).isFalse()
-        assertThat("}".isPossibleJson()).isFalse()
-        assertThat("]".isPossibleJson()).isFalse()
-        assertThat("{".isPossibleJson()).isFalse()
+        assertThat("[}".isPossibleJson()).isFalse
+        assertThat("{]".isPossibleJson()).isFalse
+        assertThat("}{".isPossibleJson()).isFalse
+        assertThat("}".isPossibleJson()).isFalse
+        assertThat("]".isPossibleJson()).isFalse
+        assertThat("{".isPossibleJson()).isFalse
     }
 
     @Test
     fun `garbage is not json`() {
-        assertThat("".isPossibleJson()).isFalse()
-        assertThat(" ".isPossibleJson()).isFalse()
-        assertThat("test".isPossibleJson()).isFalse()
-        assertThat("{a".isPossibleJson()).isFalse()
-        assertThat("[a".isPossibleJson()).isFalse()
-        assertThat("a}".isPossibleJson()).isFalse()
-        assertThat("a[".isPossibleJson()).isFalse()
+        assertThat("".isPossibleJson()).isFalse
+        assertThat(" ".isPossibleJson()).isFalse
+        assertThat("test".isPossibleJson()).isFalse
+        assertThat("{a".isPossibleJson()).isFalse
+        assertThat("[a".isPossibleJson()).isFalse
+        assertThat("a}".isPossibleJson()).isFalse
+        assertThat("a[".isPossibleJson()).isFalse
     }
 
 }
