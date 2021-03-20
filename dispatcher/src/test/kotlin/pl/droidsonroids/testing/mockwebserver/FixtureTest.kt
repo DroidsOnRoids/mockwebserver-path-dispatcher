@@ -14,7 +14,7 @@ class FixtureTest {
 
     @Test
     fun `status code is zero by default`() {
-        assertThat(fixture.statusCode).isZero()
+        assertThat(fixture.statusCode).isZero
     }
 
     @Test
@@ -29,26 +29,26 @@ class FixtureTest {
 
     @Test
     fun `missing body is not json`() {
-        assertThat(fixture.hasJsonBody()).isFalse()
+        assertThat(fixture.hasJsonBody()).isFalse
     }
 
     @Test
     fun `empty body is not json`() {
         fixture.body = ""
-        assertThat(fixture.hasJsonBody()).isFalse()
+        assertThat(fixture.hasJsonBody()).isFalse
     }
 
     @Test
     fun `textual body is not json`() {
         fixture.body = "test"
-        assertThat(fixture.hasJsonBody()).isFalse()
+        assertThat(fixture.hasJsonBody()).isFalse
     }
 
 
     @Test
     fun `json object body is not json`() {
         fixture.body = "{}"
-        assertThat(fixture.hasJsonBody()).isTrue()
+        assertThat(fixture.hasJsonBody()).isTrue
     }
 
 }
