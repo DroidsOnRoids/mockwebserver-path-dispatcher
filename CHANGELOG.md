@@ -1,4 +1,8 @@
-### 1.1.1
+### 1.1.2
+- Add support for null bodies (for HTTP 204)
+- Update dependencies versions
+
+### 1.1.1 - 30.06.2018
 - Add enqueued responses support to `FixtureDispatcher`
 - Add YAML sanitizing - if raw extended Unicode character (>=U+D800) is found it will be escaped
 - Update dependencies versions
