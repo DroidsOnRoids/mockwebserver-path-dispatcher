@@ -12,7 +12,8 @@ import java.util.*
  * Use [putResponse] to create persistent mappings and [enqueue] for one-shots.
  * Enqueued fixtures takes precedence for the same conditions.
  */
-class FixtureDispatcher internal constructor(private val responseBuilder: ResponseBuilder) : Dispatcher() {
+class FixtureDispatcher internal constructor(private val responseBuilder: ResponseBuilder) :
+    Dispatcher() {
     /**
      * Creates new dispatcher.
      * Common prefix for all the mappings can be added here instead of prepending it in all the [Condition]s.

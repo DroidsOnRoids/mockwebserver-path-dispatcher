@@ -2,7 +2,8 @@ package pl.droidsonroids.testing.mockwebserver
 
 import okhttp3.mockwebserver.MockResponse
 
-internal class MockResponseBuilder constructor(private val parser: ResourcesParser) : ResponseBuilder {
+internal class MockResponseBuilder constructor(private val parser: ResourcesParser) :
+    ResponseBuilder {
     constructor() : this(YamlResourcesParser())
 
     override fun buildMockResponse(responseFixtureName: String): MockResponse {

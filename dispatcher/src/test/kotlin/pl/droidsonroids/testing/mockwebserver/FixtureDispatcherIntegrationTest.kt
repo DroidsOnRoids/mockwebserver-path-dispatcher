@@ -16,11 +16,11 @@ class FixtureDispatcherIntegrationTest {
     @Test
     fun `response dispatched with mockwebserver`() {
         val expectedText = Thread.currentThread()
-                .contextClassLoader
-                ?.getResource("fixtures/body.txt")
-                ?.readText()
+            .contextClassLoader
+            ?.getResource("fixtures/body.txt")
+            ?.readText()
 
-		val dispatcher = FixtureDispatcher()
+        val dispatcher = FixtureDispatcher()
         val factory = PathQueryConditionFactory("/prefix/")
         dispatcher.enqueue(factory.withPathSuffix("suffix"), "json_array")
         dispatcher.putResponse(factory.withPathSuffix("suffix"), "body_path")
@@ -30,15 +30,16 @@ class FixtureDispatcherIntegrationTest {
         val client = OkHttpClient()
 
         val httpUrlWithSuffix = HttpUrl.Builder()
-                .host(mockWebServer.hostName)
-                .port(mockWebServer.port)
-                .scheme("http")
-                .encodedPath("/prefix/suffix")
-                .build()
-
-        client.newCall(Request.Builder()
-            .url(httpUrlWithSuffix)
+            .host(mockWebServer.hostName)
+            .port(mockWebServer.port)
+            .scheme("http")
+            .encodedPath("/prefix/suffix")
             .build()
+
+        client.newCall(
+            Request.Builder()
+                .url(httpUrlWithSuffix)
+                .build()
         )
             .execute()
             .use {
@@ -49,28 +50,31 @@ class FixtureDispatcherIntegrationTest {
         client.newCall(
             Request.Builder()
                 .url(httpUrlWithSuffix)
-                .build())
-                .execute()
-                .use {
-                    assertThat(it.code).isEqualTo(404)
-                    assertThat(it.body?.string()).isEqualToIgnoringWhitespace(expectedText)
-                }
+                .build()
+        )
+            .execute()
+            .use {
+                assertThat(it.code).isEqualTo(404)
+                assertThat(it.body?.string()).isEqualToIgnoringWhitespace(expectedText)
+            }
 
         val httpUrlWithAnotherSuffix = HttpUrl.Builder()
-                .host(mockWebServer.hostName)
-                .port(mockWebServer.port)
-                .scheme("http")
-                .encodedPath("/prefix/another_suffix")
-                .build()
+            .host(mockWebServer.hostName)
+            .port(mockWebServer.port)
+            .scheme("http")
+            .encodedPath("/prefix/another_suffix")
+            .build()
 
-        client.newCall(Request.Builder()
-            .url(httpUrlWithAnotherSuffix)
-                .build())
-                .execute()
-                .use {
-                    assertThat(it.code).isEqualTo(200)
-                    assertThat(it.header("Content-Type") == "application/json")
-                }
+        client.newCall(
+            Request.Builder()
+                .url(httpUrlWithAnotherSuffix)
+                .build()
+        )
+            .execute()
+            .use {
+                assertThat(it.code).isEqualTo(200)
+                assertThat(it.header("Content-Type") == "application/json")
+            }
     }
 
 }

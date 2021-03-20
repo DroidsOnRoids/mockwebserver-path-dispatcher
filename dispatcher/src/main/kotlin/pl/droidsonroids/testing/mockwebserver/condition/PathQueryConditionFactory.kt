@@ -17,8 +17,12 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
      * @since 1.1.0
      */
     @JvmOverloads
-    fun withPathSuffixAndQueryParameter(pathSuffix: String, queryParameterName: String, queryParameterValue: String? = null) =
-            PathQueryCondition(pathPrefix + pathSuffix, queryParameterName, queryParameterValue)
+    fun withPathSuffixAndQueryParameter(
+        pathSuffix: String,
+        queryParameterName: String,
+        queryParameterValue: String? = null
+    ) =
+        PathQueryCondition(pathPrefix + pathSuffix, queryParameterName, queryParameterValue)
 
     /**
      * Creates condition with <code>path</code> only.
@@ -27,7 +31,7 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
      * @since 1.1.0
      */
     fun withPathSuffix(pathSuffix: String) =
-            PathQueryCondition(pathPrefix + pathSuffix)
+        PathQueryCondition(pathPrefix + pathSuffix)
 
     /**
      * Creates condition with <code>path</code> only.
@@ -35,7 +39,7 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
      * @return a PathQueryCondition
      */
     fun withPath(path: String) =
-            PathQueryCondition(path)
+        PathQueryCondition(path)
 
     /**
      * Creates condition with both <code>path</code>, <code>queryParameterName</code>
@@ -46,8 +50,15 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
      * @param queryParameterValue query parameter value for given
      * @return a PathQueryCondition
      */
-    @Deprecated("Infix renamed to suffix", replaceWith = ReplaceWith("withPathSuffixAndQueryParameter"))
-    fun withPathInfixAndQueryParameter(pathInfix: String, queryParameterName: String, queryParameterValue: String) =
+    @Deprecated(
+        "Infix renamed to suffix",
+        replaceWith = ReplaceWith("withPathSuffixAndQueryParameter")
+    )
+    fun withPathInfixAndQueryParameter(
+        pathInfix: String,
+        queryParameterName: String,
+        queryParameterValue: String
+    ) =
         withPathSuffixAndQueryParameter(pathInfix, queryParameterName, queryParameterValue)
 
     /**
@@ -57,7 +68,10 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
      * @param queryParameterName query parameter name <code>queryParameterName</code>
      * @return a PathQueryCondition
      */
-    @Deprecated("Infix renamed to suffix", replaceWith = ReplaceWith("withPathSuffixAndQueryParameter"))
+    @Deprecated(
+        "Infix renamed to suffix",
+        replaceWith = ReplaceWith("withPathSuffixAndQueryParameter")
+    )
     fun withPathInfixAndQueryParameter(pathInfix: String, queryParameterName: String) =
         withPathSuffixAndQueryParameter(pathInfix, queryParameterName)
 

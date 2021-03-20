@@ -15,7 +15,8 @@ import java.net.Socket
 class FixtureDispatcherTest {
     private lateinit var dispatcher: FixtureDispatcher
     private lateinit var responseBuilder: ResponseBuilder
-    private val request = RecordedRequest("", Headers.headersOf(), emptyList(), 0, Buffer(), 0, Socket())
+    private val request =
+        RecordedRequest("", Headers.headersOf(), emptyList(), 0, Buffer(), 0, Socket())
 
     @Before
     fun setUp() {
@@ -26,8 +27,8 @@ class FixtureDispatcherTest {
     @Test
     fun `throws when no matching response found`() {
         assertThatThrownBy { dispatcher.dispatch(request) }
-                .isInstanceOf(IllegalArgumentException::class.java)
-                .hasMessageContaining("Unexpected request: $request")
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("Unexpected request: $request")
     }
 
     @Test
@@ -41,8 +42,8 @@ class FixtureDispatcherTest {
     fun `throws when request contains non-matching url`() {
         dispatcher.putResponse(mock { on { isRequestMatching(any()) } doReturn false }, "response")
         assertThatThrownBy { dispatcher.dispatch(request) }
-                .isInstanceOf(IllegalArgumentException::class.java)
-                .hasMessageContaining("Unexpected request: $request")
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("Unexpected request: $request")
     }
 
     @Test

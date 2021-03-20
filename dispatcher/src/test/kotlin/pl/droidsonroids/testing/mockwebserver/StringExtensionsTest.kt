@@ -3,7 +3,6 @@ package pl.droidsonroids.testing.mockwebserver
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
-import java.lang.IllegalArgumentException
 
 class StringExtensionsTest {
 
@@ -11,8 +10,8 @@ class StringExtensionsTest {
     fun `throws on non-existent resource`() {
         val nonExistentResourceName = "non-existent"
         assertThatThrownBy { nonExistentResourceName.getResourceAsString() }
-                .isInstanceOf(IllegalArgumentException::class.java)
-                .hasMessageContaining(nonExistentResourceName)
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining(nonExistentResourceName)
     }
 
     @Test

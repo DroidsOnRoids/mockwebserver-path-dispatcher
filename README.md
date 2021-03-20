@@ -4,18 +4,20 @@
 MockWebServer path dispatcher
 =============
 
-A helper for dispatching MockWebServer responses. It allows to easily mock responses with data stored in YAML files in `resources/fixtures/` directory 
-
+A helper for dispatching MockWebServer responses. It allows to easily mock responses with data
+stored in YAML files in `resources/fixtures/` directory
 
 ### Motivation
 
-- YAML used to store responses for more readability (compared to bare [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver))
+- YAML used to store responses for more readability (compared to
+  bare [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver))
 - Android compatible (unlike [MockWebServer+](https://github.com/orhanobut/mockwebserverplus))
 - Concise dispatching logic implementation
 
 ### Example
 
 Code with MockWebServer path dispatcher:
+
 ```kotlin
 fun pathCondition() {
     val dispatcher = FixtureDispatcher()
@@ -27,7 +29,9 @@ fun pathCondition() {
     mockWebServer.setDispatcher(dispatcher)
 }
 ```
+
 Example YAML file at `resources/fixtures/json_object.yaml`:
+
 ```yaml
 statusCode : 200
 headers:
@@ -37,7 +41,9 @@ body: >
       "test": null
     }
 ```
+
 Instead of defining body in yaml directly you can specify relative path to file with body:
+
 ```yaml
 statusCode : 404
 headers:
@@ -47,6 +53,7 @@ body: body.txt
 ```
 
 Code without MockWebServer path dispatcher:
+
 ```kotlin
 fun bareMockWebServer() {
     val dispatcher = object : Dispatcher() {
@@ -71,7 +78,8 @@ fun bareMockWebServer() {
 }
 ```
 
-See more examples at [FunctionalTest.kt](dispatcher/src/test/kotlin/pl/droidsonroids/testing/mockwebserver/FunctionalTest.kt)
+See more examples
+at [FunctionalTest.kt](dispatcher/src/test/kotlin/pl/droidsonroids/testing/mockwebserver/FunctionalTest.kt)
 
 ### API
 
@@ -117,7 +125,8 @@ fun pathQueryCondition() {
 }
 ```
 
-`HttpUrlCondition` - when you want to match by some part of URL other than path or single query parameter:
+`HttpUrlCondition` - when you want to match by some part of URL other than path or single query
+parameter:
 
 ```kotlin
 fun httpUrlCondition() {
@@ -146,14 +155,19 @@ fun condition() {
 ```
 
 ### Download
+
 For unit tests:
+
 ```gradle
 testImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.1'
 ```
+
 or for Android instrumentation tests:
+
 ```gradle
 androidTestImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.1'
 ```
 
 ### License
+
 Library uses the MIT License. See [LICENSE](LICENSE) file.
