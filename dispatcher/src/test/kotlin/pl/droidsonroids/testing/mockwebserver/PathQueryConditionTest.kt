@@ -23,8 +23,10 @@ class PathQueryConditionTest {
     fun setUp() {
         val factory = PathQueryConditionFactory("")
         suffixPathQueryCondition = factory.withPathSuffix(INFIX)
-        parameterNamePathQueryCondition = factory.withPathSuffixAndQueryParameter(INFIX, PARAMETER_NAME)
-        parameterValuePathQueryCondition = factory.withPathSuffixAndQueryParameter(INFIX, PARAMETER_NAME, PARAMETER_VALUE)
+        parameterNamePathQueryCondition =
+            factory.withPathSuffixAndQueryParameter(INFIX, PARAMETER_NAME)
+        parameterValuePathQueryCondition =
+            factory.withPathSuffixAndQueryParameter(INFIX, PARAMETER_NAME, PARAMETER_VALUE)
     }
 
     @Test

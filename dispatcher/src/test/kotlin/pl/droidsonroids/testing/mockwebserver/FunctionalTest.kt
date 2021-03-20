@@ -52,7 +52,10 @@ class FunctionalTest {
             http://example.test/user/events?id=2
             http://example.test/user/events?id=2&own=true
          */
-        dispatcher.putResponse(factory.withPathSuffixAndQueryParameter("events", "id", "2"), "json_object")
+        dispatcher.putResponse(
+            factory.withPathSuffixAndQueryParameter("events", "id", "2"),
+            "json_object"
+        )
 
         /*
             all URLs with path ending with profile, if there're no more specific mappings e.g.:
@@ -68,7 +71,10 @@ class FunctionalTest {
             http://example.test/user/profile?picture=false
             http://example.test/user/profile?picture=true
         */
-        dispatcher.putResponse(factory.withPathSuffixAndQueryParameter("profile", "picture"), "json_array")
+        dispatcher.putResponse(
+            factory.withPathSuffixAndQueryParameter("profile", "picture"),
+            "json_array"
+        )
 
         mockWebServer.dispatcher = dispatcher
 
@@ -126,10 +132,10 @@ class FunctionalTest {
     }
 
     private fun String.download() = client.newCall(
-            requestBuilder.url(this)
-                    .get()
-                    .build()
+        requestBuilder.url(this)
+            .get()
+            .build()
     ).execute()
-            .body
-            ?.string()
+        .body
+        ?.string()
 }

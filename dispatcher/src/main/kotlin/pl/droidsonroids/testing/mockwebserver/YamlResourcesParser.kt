@@ -14,7 +14,7 @@ internal class YamlResourcesParser : ResourcesParser {
         val result = parser.loadAs(escapedContent, Fixture::class.java)
 
         if (!result.hasJsonBody()) {
-            if (result.body !=null) {
+            if (result.body != null) {
                 val bodyPath = "fixtures/${result.body}"
                 result.body = bodyPath.getResourceAsString()
             }

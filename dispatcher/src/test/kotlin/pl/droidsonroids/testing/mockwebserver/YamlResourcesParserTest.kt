@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Before
 import org.junit.Test
-import java.lang.IllegalArgumentException
 
 private const val NON_EXISTENT_FIXTURE_NAME = "nonExistent"
 
@@ -19,9 +18,9 @@ class YamlResourcesParserTest {
     @Test
     fun `throws when fixture does not exist`() {
         assertThatExceptionOfType(IllegalArgumentException::class.java)
-                .isThrownBy { parser.parseFrom(NON_EXISTENT_FIXTURE_NAME) }
-                .withMessageContaining("Invalid path: ")
-                .withMessageContaining(NON_EXISTENT_FIXTURE_NAME)
+            .isThrownBy { parser.parseFrom(NON_EXISTENT_FIXTURE_NAME) }
+            .withMessageContaining("Invalid path: ")
+            .withMessageContaining(NON_EXISTENT_FIXTURE_NAME)
     }
 
     @Test
@@ -52,7 +51,10 @@ class YamlResourcesParserTest {
     fun `parses json path`() {
         val fixture = parser.parseFrom("body_path")
         assertThat(fixture.statusCode).isEqualTo(404)
-        assertThat(fixture.headers).containsExactlyInAnyOrder("Content-Type: text/plain", "Vary: Accept-Encoding")
+        assertThat(fixture.headers).containsExactlyInAnyOrder(
+            "Content-Type: text/plain",
+            "Vary: Accept-Encoding"
+        )
         assertThat(fixture.body).isEqualTo("""{"test"}""")
     }
 
@@ -60,13 +62,16 @@ class YamlResourcesParserTest {
     fun `parses response without body`() {
         val fixture = parser.parseFrom("no_body")
         assertThat(fixture.statusCode).isEqualTo(204)
-        assertThat(fixture.headers).containsExactlyInAnyOrder("Content-Type: text/plain", "Vary: Accept-Encoding")
+        assertThat(fixture.headers).containsExactlyInAnyOrder(
+            "Content-Type: text/plain",
+            "Vary: Accept-Encoding"
+        )
         assertThat(fixture.body).isNull()
     }
 
     @Test
     fun `throws when yaml is malformed`() {
         assertThatExceptionOfType(Throwable::class.java)
-                .isThrownBy { parser.parseFrom("malformed") }
+            .isThrownBy { parser.parseFrom("malformed") }
     }
 }
