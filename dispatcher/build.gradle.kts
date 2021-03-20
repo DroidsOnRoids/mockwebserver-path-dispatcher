@@ -1,11 +1,8 @@
-import java.net.URL
-
 plugins {
-    id("maven-publish")
-    id("signing")
-    id("jacoco")
+    jacoco
     id("org.jetbrains.kotlin.jvm") version ("1.4.31")
     id("org.jetbrains.dokka") version ("1.4.30")
+    id("com.vanniktech.maven.publish") version ("0.13.0")
 }
 
 dependencies {
@@ -32,23 +29,5 @@ tasks.jacocoTestReport {
     }
 }
 
-group = property("POM_GROUP") as String
-version = property("POM_VERSION") as String
-
-tasks.dokkaJavadoc {
-    outputDirectory.set(tasks.javadoc.get().destinationDir)
-    dokkaSourceSets {
-        configureEach {
-            includes.from(files("extra.md"))
-            sourceLink {
-                localDirectory.set(file("src/main/kotlin"))
-                remoteUrl.set(URL(property("POM_URL") as String))
-                remoteLineSuffix.set("#L")
-            }
-        }
-    }
-}
-
-tasks.named("javadoc") {
-    dependsOn("dokkaJavadoc")
-}
+group = property("GROUP") as String
+version = property("VERSION_NAME") as String
