@@ -18,6 +18,7 @@ data class PathQueryCondition(
 
     override fun compareTo(other: Condition) = when {
         other == this -> 0
+        other is PathQueryCondition && score == other.score -> path.compareTo(other.path)
         other is PathQueryCondition && score > other.score -> -1
         else -> 1
     }
