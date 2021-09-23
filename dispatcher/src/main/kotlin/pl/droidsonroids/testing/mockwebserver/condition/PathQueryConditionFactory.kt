@@ -20,9 +20,15 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
     fun withPathSuffixAndQueryParameter(
         pathSuffix: String,
         queryParameterName: String,
-        queryParameterValue: String? = null
+        queryParameterValue: String? = null,
+        httpMethod: HTTPMethod = HTTPMethod.GET,
     ) =
-        PathQueryCondition(pathPrefix + pathSuffix, queryParameterName, queryParameterValue)
+        PathQueryCondition(
+            pathPrefix + pathSuffix,
+            httpMethod,
+            queryParameterName,
+            queryParameterValue
+        )
 
     /**
      * Creates condition with <code>path</code> only.
@@ -30,16 +36,28 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
      * @return a PathQueryCondition
      * @since 1.1.0
      */
-    fun withPathSuffix(pathSuffix: String) =
-        PathQueryCondition(pathPrefix + pathSuffix)
+    fun withPathSuffix(
+        pathSuffix: String,
+        httpMethod: HTTPMethod = HTTPMethod.GET,
+    ) =
+        PathQueryCondition(
+            pathPrefix + pathSuffix,
+            httpMethod,
+        )
 
     /**
      * Creates condition with <code>path</code> only.
      * @param path the path
      * @return a PathQueryCondition
      */
-    fun withPath(path: String) =
-        PathQueryCondition(path)
+    fun withPath(
+        path: String,
+        httpMethod: HTTPMethod = HTTPMethod.GET,
+    ) =
+        PathQueryCondition(
+            path,
+            httpMethod,
+        )
 
     /**
      * Creates condition with both <code>path</code>, <code>queryParameterName</code>
@@ -57,9 +75,15 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
     fun withPathInfixAndQueryParameter(
         pathInfix: String,
         queryParameterName: String,
-        queryParameterValue: String
+        queryParameterValue: String,
+        httpMethod: HTTPMethod = HTTPMethod.GET,
     ) =
-        withPathSuffixAndQueryParameter(pathInfix, queryParameterName, queryParameterValue)
+        withPathSuffixAndQueryParameter(
+            pathInfix,
+            queryParameterName,
+            queryParameterValue,
+            httpMethod
+        )
 
     /**
      * Creates condition with both <code>path</code>, <code>queryParameterName</code>.
