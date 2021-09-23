@@ -12,6 +12,7 @@ import okhttp3.HttpUrl
  */
 data class PathQueryCondition(
     internal val path: String,
+    override val httpMethod: HTTPMethod,
     internal val queryParameterName: String? = null,
     internal val queryParameterValue: String? = null
 ) : HttpUrlCondition() {
