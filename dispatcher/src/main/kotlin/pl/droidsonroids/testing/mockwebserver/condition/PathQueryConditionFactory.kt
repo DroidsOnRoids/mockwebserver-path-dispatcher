@@ -21,7 +21,7 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
         pathSuffix: String,
         queryParameterName: String,
         queryParameterValue: String? = null,
-        httpMethod: HTTPMethod = HTTPMethod.GET,
+        httpMethod: HTTPMethod = HTTPMethod.ANY,
     ) =
         PathQueryCondition(
             pathPrefix + pathSuffix,
@@ -38,7 +38,7 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
      */
     fun withPathSuffix(
         pathSuffix: String,
-        httpMethod: HTTPMethod = HTTPMethod.GET,
+        httpMethod: HTTPMethod = HTTPMethod.ANY,
     ) =
         PathQueryCondition(
             pathPrefix + pathSuffix,
@@ -52,7 +52,7 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
      */
     fun withPath(
         path: String,
-        httpMethod: HTTPMethod = HTTPMethod.GET,
+        httpMethod: HTTPMethod = HTTPMethod.ANY,
     ) =
         PathQueryCondition(
             path,
@@ -76,7 +76,7 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
         pathInfix: String,
         queryParameterName: String,
         queryParameterValue: String,
-        httpMethod: HTTPMethod = HTTPMethod.GET,
+        httpMethod: HTTPMethod = HTTPMethod.ANY,
     ) =
         withPathSuffixAndQueryParameter(
             pathInfix,
