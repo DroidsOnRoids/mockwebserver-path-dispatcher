@@ -64,4 +64,25 @@ class HttpUrlConditionTest {
 
         assertThat(matchAllUrlCondition.isRequestMatching(request)).isTrue
     }
+
+    @Test
+    fun `request with URL with any request method should match any request method`() {
+        HTTPMethod.values()
+            .filter { it != HTTPMethod.ANY }
+            .forEach { httpMethod->
+                val matchAllUrlCondition = object : HttpUrlCondition() {
+                    override val httpMethod: HTTPMethod
+                        get() = HTTPMethod.ANY
+
+                    override fun isUrlMatching(url: HttpUrl) = true
+                    override fun compareTo(other: Condition) = 0
+                }
+                val request =
+                    RecordedRequest("${httpMethod.name} /some/path HTTP/1.1", Headers.headersOf(), emptyList(), 0, Buffer(), 0, socket)
+
+                assertThat(matchAllUrlCondition.isRequestMatching(request))
+                    .withFailMessage { "${httpMethod.name} does not match condition" }
+                    .isTrue
+            }
+    }
 }

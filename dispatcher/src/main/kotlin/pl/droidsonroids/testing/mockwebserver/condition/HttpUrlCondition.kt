@@ -9,10 +9,10 @@ import okhttp3.mockwebserver.RecordedRequest
  * Requests without <code>requestUrl</code>s are excluded from matching.
  */
 abstract class HttpUrlCondition : Condition {
-    internal open val httpMethod: HTTPMethod = HTTPMethod.GET
+    internal open val httpMethod: HTTPMethod = HTTPMethod.ANY
 
     override fun isRequestMatching(request: RecordedRequest): Boolean {
-        if (request.method != httpMethod.name) {
+        if (httpMethod != HTTPMethod.ANY && request.method != httpMethod.name) {
             return false
         }
 
