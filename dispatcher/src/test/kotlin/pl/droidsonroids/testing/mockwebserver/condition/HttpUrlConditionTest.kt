@@ -51,7 +51,7 @@ class HttpUrlConditionTest {
     }
 
     @Test
-    fun `request with URL and same request type should match`() {
+    fun `request with URL and same request method should match`() {
         val matchAllUrlCondition = object : HttpUrlCondition() {
             override val httpMethod: HTTPMethod
                 get() = HTTPMethod.GET
