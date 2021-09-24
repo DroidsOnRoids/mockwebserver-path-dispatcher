@@ -26,9 +26,6 @@ class HttpUrlConditionTest {
     @Test
     fun `request without URL does not match`() {
         val matchAllUrlCondition = object : HttpUrlCondition() {
-            override val httpMethod: HTTPMethod
-                get() = HTTPMethod.GET
-
             override fun isUrlMatching(url: HttpUrl) = true
             override fun compareTo(other: Condition) = 0
         }
