@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import pl.droidsonroids.testing.mockwebserver.condition.Condition
+import pl.droidsonroids.testing.mockwebserver.condition.HTTPMethod
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryCondition
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactory
 
@@ -151,6 +152,17 @@ class PathQueryConditionTest {
 
         assertThat(firstCondition.compareTo(secondCondition))
             .isGreaterThan(0)
+    }
+
+    @Test
+    fun `compareTo should return -1 when the first condition has ANY http method and the second is different`() {
+        val firstCondition = PathQueryConditionFactory()
+            .withPathSuffix("/abc", HTTPMethod.ANY)
+        val secondCondition = PathQueryConditionFactory()
+            .withPathSuffix("/abc", HTTPMethod.GET)
+
+        assertThat(firstCondition.compareTo(secondCondition))
+            .isEqualTo(-1)
     }
 
     @Test
