@@ -2,6 +2,7 @@ package pl.droidsonroids.testing.mockwebserver
 
 import com.nhaarman.mockito_kotlin.mock
 import nl.jqno.equalsverifier.EqualsVerifier
+import nl.jqno.equalsverifier.Warning
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -112,7 +113,10 @@ class PathQueryConditionTest {
 
     @Test
     fun `equals and hashCode match contract`() {
-        EqualsVerifier.forClass(PathQueryCondition::class.java).verify()
+        EqualsVerifier
+            .forClass(PathQueryCondition::class.java)
+            .suppress(Warning.ALL_FIELDS_SHOULD_BE_USED)
+            .verify()
     }
 
     @Test
