@@ -1,4 +1,10 @@
-### 1.1.2
+### 1.1.3 - 04.10.2021
+
+- Allow matching request by HTTP method
+- Sort with path if they are equal
+- Update dependencies versions
+
+### 1.1.2 - 20.03.2021
 
 - Add support for null bodies (for HTTP 204)
 - Update dependencies versions
