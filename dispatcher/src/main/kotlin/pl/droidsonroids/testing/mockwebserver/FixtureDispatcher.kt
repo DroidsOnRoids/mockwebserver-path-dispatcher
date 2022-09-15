@@ -22,6 +22,7 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
 
     private val constantResponses: MutableMap<Condition, String> = TreeMap()
     private val queuedResponses: MutableMap<Condition, Deque<String>> = TreeMap()
+    private var fallbackResponse: String? = null
 
     /**
      * Called by MockWebServer to determine which response should be returned for given request
@@ -45,6 +46,11 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
                 return responseBuilder.buildMockResponse(fixture)
             }
         }
+
+        fallbackResponse?.let { fallbackResponse ->
+            return responseBuilder.buildMockResponse(fallbackResponse)
+        }
+
         throw IllegalArgumentException("Unexpected request: $request")
     }
 
@@ -67,5 +73,12 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
         val fixtures = queuedResponses[condition] ?: ArrayDeque()
         fixtures += responseFixtureName
         queuedResponses[condition] = fixtures
+    }
+
+    /**
+     * Sets the fallback response when no fixture matches the current existing configured responses.
+     */
+    fun setFallbackResponse(responseFixtureName: String?) {
+        fallbackResponse = responseFixtureName
     }
 }

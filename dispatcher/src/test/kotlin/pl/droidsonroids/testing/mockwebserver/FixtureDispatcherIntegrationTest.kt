@@ -25,6 +25,7 @@ class FixtureDispatcherIntegrationTest {
         dispatcher.enqueue(factory.withPathSuffix("suffix"), "json_array")
         dispatcher.putResponse(factory.withPathSuffix("suffix"), "body_path")
         dispatcher.putResponse(factory.withPathSuffix("another_suffix"), "json_object")
+        dispatcher.setFallbackResponse("no_body")
         mockWebServer.dispatcher = dispatcher
 
         val client = OkHttpClient()
@@ -74,6 +75,25 @@ class FixtureDispatcherIntegrationTest {
             .use {
                 assertThat(it.code).isEqualTo(200)
                 assertThat(it.header("Content-Type") == "application/json")
+            }
+
+        val httpUrlWithUnknownSuffix = HttpUrl.Builder()
+            .host(mockWebServer.hostName)
+            .port(mockWebServer.port)
+            .scheme("http")
+            .encodedPath("/prefix/unknown_suffix")
+            .build()
+
+        client.newCall(
+            Request.Builder()
+                .url(httpUrlWithUnknownSuffix)
+                .build()
+        )
+            .execute()
+            .use {
+                assertThat(it.code).isEqualTo(204)
+                assertThat(it.header("Content-Type") == "text/plain")
+                assertThat(it.body.toString() == "")
             }
     }
 
