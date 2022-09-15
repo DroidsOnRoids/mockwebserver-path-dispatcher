@@ -52,6 +52,13 @@ headers:
 body: body.txt
 ```
 
+You can force the request to fail by setting `connectionFailure` to `true`:
+
+```yaml
+statusCode : 200
+connectionFailure: true
+```
+
 Code without MockWebServer path dispatcher:
 
 ```kotlin
