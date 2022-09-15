@@ -1,3 +1,8 @@
+### 1.1.4 - 15.09.2022
+
+- Add option to mock connection failure
+- Add fallback responses
+
 ### 1.1.3 - 04.10.2021
 
 - Allow matching request by HTTP method
