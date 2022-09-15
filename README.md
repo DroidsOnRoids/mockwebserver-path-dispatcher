@@ -102,6 +102,8 @@ fun factory() {
     dispatcher.enqueue(factory.withPathSuffix("suffix"), "baz")
     // foo will be served by default (if there is nothing enqueued) for subsequent matching requests
     dispatcher.putResponse(factory.withPathSuffix("suffix"), "foo")    
+    // qux will be served by default when there are no matching requests
+    dispatcher.setFallbackResponse("qux")    
     mockWebServer.setDispatcher(dispatcher)
 }
 ```
