@@ -8,6 +8,8 @@ internal class Fixture {
         internal set
     var headers: List<String> = emptyList()
         internal set
+    var connectionFailure: Boolean = false
+        internal set
 
     internal fun hasJsonBody() = body?.isPossibleJson() ?: false
 }
