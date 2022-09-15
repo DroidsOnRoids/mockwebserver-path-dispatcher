@@ -1,6 +1,7 @@
 package pl.droidsonroids.testing.mockwebserver
 
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.SocketPolicy
 
 internal class MockResponseBuilder constructor(private val parser: ResourcesParser) :
     ResponseBuilder {
@@ -16,6 +17,10 @@ internal class MockResponseBuilder constructor(private val parser: ResourcesPars
 
         fixture.headers.forEach {
             mockResponse.addHeader(it)
+        }
+
+        if (fixture.connectionFailure) {
+            mockResponse.socketPolicy = SocketPolicy.DISCONNECT_AT_START
         }
 
         return mockResponse
