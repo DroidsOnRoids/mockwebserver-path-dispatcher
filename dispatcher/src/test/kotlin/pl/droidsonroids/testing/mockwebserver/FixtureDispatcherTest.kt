@@ -60,4 +60,11 @@ class FixtureDispatcherTest {
         dispatcher.dispatch(request)
         verify(responseBuilder).buildMockResponse("response")
     }
+
+    @Test
+    fun `dispatches fallback response when no matching response found`() {
+        dispatcher.setFallbackResponse("response")
+        dispatcher.dispatch(request)
+        verify(responseBuilder).buildMockResponse("response")
+    }
 }
