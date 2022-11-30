@@ -5,13 +5,12 @@ import org.yaml.snakeyaml.Yaml
 
 internal class YamlResourcesParser : ResourcesParser {
     private val escaper = JavaUnicodeEscaper.above(0xD800)
-    private val parser = Yaml()
 
     override fun parseFrom(fileName: String): Fixture {
         val path = "fixtures/$fileName.yaml"
         val content = path.getResourceAsString()
         val escapedContent = escaper.translate(content)
-        val result = parser.loadAs(escapedContent, Fixture::class.java)
+        val result = Yaml().loadAs(escapedContent, Fixture::class.java)
 
         if (!result.hasJsonBody()) {
             if (result.body != null) {
