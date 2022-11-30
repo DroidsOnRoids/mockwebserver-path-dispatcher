@@ -6,6 +6,7 @@ import okhttp3.mockwebserver.RecordedRequest
 import pl.droidsonroids.testing.mockwebserver.condition.Condition
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryCondition
 import java.util.*
+import java.util.Collections.synchronizedSortedMap
 
 /**
  * The dispatcher using conditional fixture response mapping and enqueuing.
@@ -20,8 +21,10 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
      */
     constructor() : this(MockResponseBuilder())
 
-    private val constantResponses: MutableMap<Condition, String> = TreeMap()
-    private val queuedResponses: MutableMap<Condition, Deque<String>> = TreeMap()
+    private val constantResponses: MutableMap<Condition, String> =
+        synchronizedSortedMap(TreeMap())
+    private val queuedResponses: MutableMap<Condition, Deque<String>> =
+        synchronizedSortedMap(TreeMap())
     private var fallbackResponse: String? = null
 
     /**
@@ -31,19 +34,23 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
      */
     @Throws(IllegalArgumentException::class)
     override fun dispatch(request: RecordedRequest): MockResponse {
-        queuedResponses.forEach { (condition, fixtures) ->
-            if (condition.isRequestMatching(request)) {
-                val fixture = fixtures.removeFirst()
-                if (fixtures.isEmpty()) {
-                    queuedResponses.remove(condition)
+        synchronized(queuedResponses) {
+            queuedResponses.forEach { (condition, fixtures) ->
+                if (condition.isRequestMatching(request)) {
+                    val fixture = fixtures.removeFirst()
+                    if (fixtures.isEmpty()) {
+                        queuedResponses.remove(condition)
+                    }
+                    return responseBuilder.buildMockResponse(fixture)
                 }
-                return responseBuilder.buildMockResponse(fixture)
             }
         }
 
-        constantResponses.forEach { (condition, fixture) ->
-            if (condition.isRequestMatching(request)) {
-                return responseBuilder.buildMockResponse(fixture)
+        synchronized(constantResponses) {
+            constantResponses.forEach { (condition, fixture) ->
+                if (condition.isRequestMatching(request)) {
+                    return responseBuilder.buildMockResponse(fixture)
+                }
             }
         }
 
