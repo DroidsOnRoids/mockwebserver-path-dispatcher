@@ -1,3 +1,7 @@
+### 1.1.5 - 01.12.2022
+
+- Make FixtureDispatcher thread-safe
+
 ### 1.1.4 - 15.09.2022
 
 - Add option to mock connection failure
