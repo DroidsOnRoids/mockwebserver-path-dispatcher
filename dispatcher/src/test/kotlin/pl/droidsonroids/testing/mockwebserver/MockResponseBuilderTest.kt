@@ -52,4 +52,14 @@ internal class MockResponseBuilderTest {
         assertThat(mockResponse.getBody()).isNull()
         assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.DISCONNECT_AT_START)
     }
+
+    @Test
+    fun `NO_RESPONSE set when timeout failure is true`() {
+        fixture.statusCode = 200
+        fixture.timeoutFailure = true
+        val mockResponse = builder.buildMockResponse("")
+        assertThat(mockResponse.status).contains("200")
+        assertThat(mockResponse.getBody()).isNull()
+        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.NO_RESPONSE)
+    }
 }

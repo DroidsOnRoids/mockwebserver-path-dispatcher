@@ -10,6 +10,8 @@ internal class Fixture {
         internal set
     var connectionFailure: Boolean = false
         internal set
+    var timeoutFailure: Boolean = false
+        internal set
 
     internal fun hasJsonBody() = body?.isPossibleJson() ?: false
 }

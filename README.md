@@ -59,6 +59,13 @@ statusCode : 200
 connectionFailure: true
 ```
 
+Alternatively, you can specify not getting a response by simulating a timeout with `timeoutFailure` to `true`:
+
+```yaml
+statusCode : 200
+timeoutFailure: true
+```
+
 Code without MockWebServer path dispatcher:
 
 ```kotlin
