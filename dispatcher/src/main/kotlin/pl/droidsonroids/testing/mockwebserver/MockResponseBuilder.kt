@@ -19,8 +19,13 @@ internal class MockResponseBuilder constructor(private val parser: ResourcesPars
             mockResponse.addHeader(it)
         }
 
-        if (fixture.connectionFailure) {
-            mockResponse.socketPolicy = SocketPolicy.DISCONNECT_AT_START
+        when {
+            fixture.connectionFailure -> {
+                mockResponse.socketPolicy = SocketPolicy.DISCONNECT_AT_START
+            }
+            fixture.timeoutFailure -> {
+                mockResponse.socketPolicy = SocketPolicy.NO_RESPONSE
+            }
         }
 
         return mockResponse

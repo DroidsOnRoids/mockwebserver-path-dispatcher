@@ -30,6 +30,7 @@ class YamlResourcesParserTest {
         assertThat(fixture.headers).containsOnly("Content-Type: application/json")
         assertThat(fixture.body).isEqualToIgnoringWhitespace("""{"test": null}""")
         assertThat(fixture.connectionFailure).isFalse
+        assertThat(fixture.timeoutFailure).isFalse
     }
 
     @Test
@@ -39,6 +40,7 @@ class YamlResourcesParserTest {
         assertThat(fixture.headers).containsOnly("Content-Type: application/json")
         assertThat(fixture.body).isEqualToIgnoringWhitespace("""{"test": "\uD83D\uDC31"}""")
         assertThat(fixture.connectionFailure).isFalse
+        assertThat(fixture.timeoutFailure).isFalse
     }
 
     @Test
@@ -48,6 +50,7 @@ class YamlResourcesParserTest {
         assertThat(fixture.headers).isEmpty()
         assertThat(fixture.body).isEqualToIgnoringWhitespace("[]")
         assertThat(fixture.connectionFailure).isFalse
+        assertThat(fixture.timeoutFailure).isFalse
     }
 
     @Test
@@ -60,6 +63,7 @@ class YamlResourcesParserTest {
         )
         assertThat(fixture.body).isEqualTo("""{"test"}""")
         assertThat(fixture.connectionFailure).isFalse
+        assertThat(fixture.timeoutFailure).isFalse
     }
 
     @Test
@@ -72,6 +76,7 @@ class YamlResourcesParserTest {
         )
         assertThat(fixture.body).isNull()
         assertThat(fixture.connectionFailure).isFalse
+        assertThat(fixture.timeoutFailure).isFalse
     }
 
     @Test
@@ -83,6 +88,19 @@ class YamlResourcesParserTest {
         )
         assertThat(fixture.body).isNull()
         assertThat(fixture.connectionFailure).isTrue
+        assertThat(fixture.timeoutFailure).isFalse
+    }
+
+    @Test
+    fun `parses response with timeout failure`() {
+        val fixture = parser.parseFrom("timeout_failure")
+        assertThat(fixture.statusCode).isEqualTo(200)
+        assertThat(fixture.headers).containsExactlyInAnyOrder(
+                "Content-Type: text/plain",
+        )
+        assertThat(fixture.body).isNull()
+        assertThat(fixture.connectionFailure).isFalse
+        assertThat(fixture.timeoutFailure).isTrue
     }
 
     @Test
