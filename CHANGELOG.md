@@ -1,3 +1,12 @@
+### 1.1.7 - 01.08.2023
+
+- Expand `PathQueryCondition` to enable matching requests on multiple query parameters (per issue [#16](https://github.com/DroidsOnRoids/mockwebserver-path-dispatcher/issues/16))
+- Compatibility is maintained with previous versions
+
+### 1.1.6 - 09.01.2023
+
+- Add option to mock timeout failure
+
 ### 1.1.5 - 01.12.2022
 
 - Make FixtureDispatcher thread-safe
