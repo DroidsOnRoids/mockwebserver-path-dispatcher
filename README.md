@@ -126,6 +126,11 @@ fun factory() {
     dispatcher.putResponse(factory.withPathSuffixAndQueryParameter("suffix", "param"), "response_with_query_parameter")
     // match all URLs with path ending with "suffix" and have "param" with "value" as query parameter e.g. http://example.test/prefix/user/suffix?param=value
     dispatcher.putResponse(factory.withPathSuffixAndQueryParameter("suffix", "param", "value"), "response_with_query_parameter_and_value")
+    // match all URLs with path ending with "suffix" and have multiple parameter name/value pairs e.g.http://example.test/prefix/user/suffix?param=value&param2=value2
+    dispatcher.putResponse(
+        factory.withPathSuffixAndQueryParameters("suffix", mapOf("param" to "value", "param2" to "value2")),
+        "response_with_multiple_query_parameters"
+    )
     mockWebServer.setDispatcher(dispatcher)
 }
 ```
@@ -138,6 +143,15 @@ fun pathQueryCondition() {
     dispatcher.putResponse(PathQueryCondition("/prefix/suffix", "param", "value"), "response_with_query_parameter_and_value")
     mockWebServer.setDispatcher(dispatcher)
     
+}
+```
+Also supports a map of multiple query parameters:
+
+```kotlin
+fun pathQueryConditions() {
+    val dispatcher = FixtureDispatcher()
+    dispatcher.putResponse(PathQueryCondition("/prefix/suffix", mapOf("param" to "value", "param2" to "value2")), "response_with_query_parameters_and_values")
+    mockWebServer.setDispatcher(dispatcher)
 }
 ```
 
@@ -175,13 +189,13 @@ fun condition() {
 For unit tests:
 
 ```gradle
-testImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.1'
+testImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.7'
 ```
 
 or for Android instrumentation tests:
 
 ```gradle
-androidTestImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.1'
+androidTestImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.7'
 ```
 
 ### License

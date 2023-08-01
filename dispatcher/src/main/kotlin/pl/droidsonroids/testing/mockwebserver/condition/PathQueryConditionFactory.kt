@@ -8,11 +8,32 @@ package pl.droidsonroids.testing.mockwebserver.condition
  */
 class PathQueryConditionFactory constructor(private val pathPrefix: String = "") {
     /**
+     * Creates condition with <code>path</code> and a <code>Map</code> of one or more query parameter name/value pairs.
+     * @param pathSuffix path suffix, may be empty
+     * @param queryParameters <code>Map</code> of query parameter name/value pairs
+     * @param httpMethod optional HTTPMethod for matching, defaults to HTTPMethod.ANY
+     * @return a PathQueryCondition
+     * @since 1.1.7
+     */
+    @JvmOverloads
+    fun withPathSuffixAndQueryParameters(
+        pathSuffix: String,
+        queryParameters: Map<String, String?>,
+        httpMethod: HTTPMethod = HTTPMethod.ANY
+    ) =
+        PathQueryCondition(
+            pathPrefix + pathSuffix,
+            httpMethod,
+            queryParameters
+        )
+
+    /**
      * Creates condition with both <code>path</code>, <code>queryParameterName</code>
      * and <code>queryParameterValue</code>.
      * @param pathSuffix path suffix, may be empty
      * @param queryParameterName query parameter name <code>queryParameterName</code>
      * @param queryParameterValue query parameter value for given
+     * @param httpMethod optional HTTPMethod for matching, defaults to HTTPMethod.ANY
      * @return a PathQueryCondition
      * @since 1.1.0
      */
@@ -33,6 +54,7 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
     /**
      * Creates condition with <code>path</code> only.
      * @param pathSuffix path suffix, may be empty
+     * @param httpMethod optional HTTPMethod for matching, defaults to HTTPMethod.ANY
      * @return a PathQueryCondition
      * @since 1.1.0
      */
@@ -48,6 +70,7 @@ class PathQueryConditionFactory constructor(private val pathPrefix: String = "")
     /**
      * Creates condition with <code>path</code> only.
      * @param path the path
+     * @param httpMethod optional HTTPMethod for matching, defaults to HTTPMethod.ANY
      * @return a PathQueryCondition
      */
     fun withPath(
