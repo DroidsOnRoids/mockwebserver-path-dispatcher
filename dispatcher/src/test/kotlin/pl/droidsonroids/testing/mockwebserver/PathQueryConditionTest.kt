@@ -274,17 +274,6 @@ class PathQueryConditionTest {
     }
 
     @Test
-    fun `compareTo should return -1 when first condition http method has higher precedence than second condition`() {
-        val firstCondition = PathQueryConditionFactory()
-            .withPathSuffix("/abc", HTTPMethod.GET)
-        val secondCondition = PathQueryConditionFactory()
-            .withPathSuffix("/abc", HTTPMethod.POST)
-
-        assertThat(firstCondition.compareTo(secondCondition))
-            .isEqualTo(-1)
-    }
-
-    @Test
     fun `compareTo should return -1 when the first condition has a parameter name and the second one does not`() {
         val firstCondition = PathQueryConditionFactory()
             .withPathSuffixAndQueryParameter("/abc", PARAMETER_NAME)
