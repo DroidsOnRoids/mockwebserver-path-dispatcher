@@ -45,7 +45,7 @@ class FunctionalTest {
             http://example.test/user/events?id=1
             http://example.test/user/events?own=true
          */
-        dispatcher.putResponse(factory.withPathSuffix("events"), "body_path")
+        dispatcher.putResponse(factory.withPathSuffix("events"), "body_text_path")
 
         /*
             all URLs with path ending with events and id query parameter equal to 2 e.g.:
@@ -64,7 +64,7 @@ class FunctionalTest {
         */
         dispatcher.putResponse(factory.withPathSuffix("profile"), "json_object")
         dispatcher.enqueue(factory.withPathSuffix("profile"), "json_array")
-        dispatcher.enqueue(factory.withPathSuffix("profile"), "body_path")
+        dispatcher.enqueue(factory.withPathSuffix("profile"), "body_text_path")
 
         /*
             all URLs with path ending with profile and picture query parameter e.g.:
@@ -79,13 +79,13 @@ class FunctionalTest {
         mockWebServer.dispatcher = dispatcher
 
         val events = "http://localhost:$port/user/events".download()
-        assertThat(events).isEqualTo("fixtures/body.txt".getResourceAsString())
+        assertThat(events).isEqualTo("fixtures/body_plain.txt".getResourceAsString())
 
         val event = "http://localhost:$port/user/events?id=1".download()
-        assertThat(event).isEqualTo("fixtures/body.txt".getResourceAsString())
+        assertThat(event).isEqualTo("fixtures/body_plain.txt".getResourceAsString())
 
         val ownEvents = "http://localhost:$port/user/events?own=true".download()
-        assertThat(ownEvents).isEqualTo("fixtures/body.txt".getResourceAsString())
+        assertThat(ownEvents).isEqualTo("fixtures/body_plain.txt".getResourceAsString())
 
         val secondEvent = "http://localhost:$port/user/events?id=2".download()
         assertThat(secondEvent).isEqualTo(TEST_JSON_OBJECT)
@@ -99,7 +99,7 @@ class FunctionalTest {
         val fourthProfile = "http://localhost:$port/user/profile".download()
 
         assertThat(firstProfile).isEqualTo(TEST_JSON_ARRAY)
-        assertThat(secondProfile).isEqualTo("fixtures/body.txt".getResourceAsString())
+        assertThat(secondProfile).isEqualTo("fixtures/body_plain.txt".getResourceAsString())
         assertThat(thirdProfile).isEqualTo(TEST_JSON_OBJECT)
         assertThat(fourthProfile).isEqualTo(thirdProfile)
 
@@ -127,7 +127,7 @@ class FunctionalTest {
             http://example.test/events?id=1
             http://example.test/events?own=true
         */
-        dispatcher.putResponse(factory.withPath("/events"), "body_path")
+        dispatcher.putResponse(factory.withPath("/events"), "body_text_path")
 
     }
 

@@ -2,9 +2,17 @@
 
 package pl.droidsonroids.testing.mockwebserver
 
+import okio.Buffer
+
 internal fun String.getResourceAsString(): String {
     val loader = Thread.currentThread().contextClassLoader
     return loader.getResource(this)?.readText()
+        ?: throw IllegalArgumentException("Invalid path: $this")
+}
+
+internal fun String.getResourceAsByteArray(): Buffer {
+    val loader = Thread.currentThread().contextClassLoader
+    return loader.getResource(this)?.readBytes()?.let { Buffer().write(it) }
         ?: throw IllegalArgumentException("Invalid path: $this")
 }
 

@@ -23,8 +23,8 @@ fun pathCondition() {
     val dispatcher = FixtureDispatcher()
     // match all URLs with path starting with /prefix/ e.g. http://example.test/prefix/
     val factory = PathQueryConditionFactory("/prefix/")
-    // match all URLs with path ending with "suffix" and return response from fixtures/body_path.yaml
-    dispatcher.putResponse(factory.withPathSuffix("suffix"), "body_path")
+    // match all URLs with path ending with "suffix" and return response from fixtures/body_text_path.yaml
+    dispatcher.putResponse(factory.withPathSuffix("suffix"), "body_text_path")
     dispatcher.putResponse(factory.withPathSuffix("another_suffix"), "json_object")
     mockWebServer.setDispatcher(dispatcher)
 }

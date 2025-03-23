@@ -15,9 +15,23 @@ internal class YamlResourcesParser : ResourcesParser {
         if (!result.hasJsonBody()) {
             if (result.body != null) {
                 val bodyPath = "fixtures/${result.body}"
-                result.body = bodyPath.getResourceAsString()
+                result.bodyContent =
+                    when (result.contentType()) {
+                        "application/json" -> BodyContent.Json(bodyPath.getResourceAsString())
+                        "text/plain" -> BodyContent.Text(bodyPath.getResourceAsString())
+                        else -> BodyContent.Binary(bodyPath.getResourceAsByteArray())
+                    }
             }
+        } else {
+            result.bodyContent = BodyContent.Text(result.body!!)
         }
         return result
     }
+
+    private fun Fixture.contentType() =
+        headers
+            .firstOrNull { it.startsWith("Content-Type:") }
+            ?.split(":")
+            ?.lastOrNull()
+            ?.trim() ?: "application/json"
 }
