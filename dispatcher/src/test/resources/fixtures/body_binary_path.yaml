@@ -1,0 +1,5 @@
+statusCode: 404
+headers:
+  - 'Content-Type: image/jpeg'
+  - 'Vary: Accept-Encoding'
+body: image.jpeg

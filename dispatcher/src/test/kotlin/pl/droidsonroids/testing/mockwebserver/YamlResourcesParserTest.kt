@@ -1,5 +1,6 @@
 package pl.droidsonroids.testing.mockwebserver
 
+import okio.Buffer
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Before
@@ -54,14 +55,64 @@ class YamlResourcesParserTest {
     }
 
     @Test
+    fun `parses json path when no content type is specified`() {
+        val fixture = parser.parseFrom("body_unknown_content_type_path")
+        assertThat(fixture.statusCode).isEqualTo(404)
+        assertThat(fixture.headers).containsExactlyInAnyOrder(
+            "Vary: Accept-Encoding"
+        )
+        assertThat(fixture.body).isEqualTo("body_json.txt")
+        assertThat(fixture.bodyContent).isEqualTo(BodyContent.Json("""{"test"}"""))
+        assertThat(fixture.connectionFailure).isFalse
+        assertThat(fixture.timeoutFailure).isFalse
+    }
+
+    @Test
     fun `parses json path`() {
-        val fixture = parser.parseFrom("body_path")
+        val fixture = parser.parseFrom("body_json_path")
+        assertThat(fixture.statusCode).isEqualTo(404)
+        assertThat(fixture.headers).containsExactlyInAnyOrder(
+            "Content-Type: application/json",
+            "Vary: Accept-Encoding"
+        )
+        assertThat(fixture.body).isEqualTo("body_json.txt")
+        assertThat(fixture.bodyContent).isEqualTo(BodyContent.Json("""{"test"}"""))
+        assertThat(fixture.connectionFailure).isFalse
+        assertThat(fixture.timeoutFailure).isFalse
+    }
+
+    @Test
+    fun `parses text path`() {
+        val fixture = parser.parseFrom("body_text_path")
         assertThat(fixture.statusCode).isEqualTo(404)
         assertThat(fixture.headers).containsExactlyInAnyOrder(
             "Content-Type: text/plain",
             "Vary: Accept-Encoding"
         )
-        assertThat(fixture.body).isEqualTo("""{"test"}""")
+        assertThat(fixture.body).isEqualTo("body_plain.txt")
+        assertThat(fixture.bodyContent).isEqualTo(BodyContent.Text("test"))
+        assertThat(fixture.connectionFailure).isFalse
+        assertThat(fixture.timeoutFailure).isFalse
+    }
+
+    @Test
+    fun `parses binary path`() {
+        val fixture = parser.parseFrom("body_binary_path")
+        assertThat(fixture.statusCode).isEqualTo(404)
+        assertThat(fixture.headers).containsExactlyInAnyOrder(
+            "Content-Type: image/jpeg",
+            "Vary: Accept-Encoding"
+        )
+        assertThat(fixture.body).isEqualTo("image.jpeg")
+        assertThat(fixture.bodyContent).isEqualTo(
+            BodyContent.Binary(
+                Buffer().write(
+                    byteArrayOf(
+                        0xef.toByte()
+                    )
+                )
+            )
+        )
         assertThat(fixture.connectionFailure).isFalse
         assertThat(fixture.timeoutFailure).isFalse
     }

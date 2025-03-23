@@ -17,13 +17,13 @@ class FixtureDispatcherIntegrationTest {
     fun `response dispatched with mockwebserver`() {
         val expectedText = Thread.currentThread()
             .contextClassLoader
-            ?.getResource("fixtures/body.txt")
+            ?.getResource("fixtures/body_plain.txt")
             ?.readText()
 
         val dispatcher = FixtureDispatcher()
         val factory = PathQueryConditionFactory("/prefix/")
         dispatcher.enqueue(factory.withPathSuffix("suffix"), "json_array")
-        dispatcher.putResponse(factory.withPathSuffix("suffix"), "body_path")
+        dispatcher.putResponse(factory.withPathSuffix("suffix"), "body_text_path")
         dispatcher.putResponse(factory.withPathSuffix("another_suffix"), "json_object")
         dispatcher.setFallbackResponse("no_body")
         mockWebServer.dispatcher = dispatcher

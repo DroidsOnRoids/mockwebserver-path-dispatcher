@@ -13,10 +13,21 @@ internal class MockResponseBuilder constructor(private val parser: ResourcesPars
         val mockResponse = MockResponse()
         mockResponse.setResponseCode(fixture.statusCode)
 
-        fixture.body?.let(mockResponse::setBody)
-
         fixture.headers.forEach {
             mockResponse.addHeader(it)
+        }
+
+        when (val bodyContent = fixture.bodyContent) {
+            is BodyContent.Text -> {
+                mockResponse.addHeader("Content-Type: text/plain")
+                mockResponse.setBody(bodyContent.content)
+            }
+            is BodyContent.Json -> {
+                mockResponse.addHeader("Content-Type: application/json")
+                mockResponse.setBody(bodyContent.content)
+            }
+            is BodyContent.Binary -> mockResponse.setBody(bodyContent.content)
+            null -> Unit
         }
 
         when {

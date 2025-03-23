@@ -1,0 +1,5 @@
+statusCode: 404
+headers:
+  - 'Content-Type: application/json'
+  - "Vary: Accept-Encoding"
+body: body_json.txt
