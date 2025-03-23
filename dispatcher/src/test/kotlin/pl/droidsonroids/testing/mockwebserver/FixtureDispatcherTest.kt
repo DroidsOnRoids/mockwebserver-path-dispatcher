@@ -39,6 +39,15 @@ class FixtureDispatcherTest {
     }
 
     @Test
+    fun `matches single response with body content transformer`() {
+        val bodyContentTransformer: BodyContentTransformer = mock()
+        dispatcher.setBodyContentTransformerResponse(bodyContentTransformer)
+        dispatcher.putResponse(mock { on { isRequestMatching(any()) } doReturn true }, "response")
+        dispatcher.dispatch(request)
+        verify(responseBuilder).buildMockResponse("response", bodyContentTransformer)
+    }
+
+    @Test
     fun `throws when request contains non-matching url`() {
         dispatcher.putResponse(mock { on { isRequestMatching(any()) } doReturn false }, "response")
         assertThatThrownBy { dispatcher.dispatch(request) }
@@ -62,9 +71,35 @@ class FixtureDispatcherTest {
     }
 
     @Test
+    fun `matches response with path and parameter name and body content transformer`() {
+        val bodyContentTransformer: BodyContentTransformer = mock()
+        dispatcher.setBodyContentTransformerResponse(bodyContentTransformer)
+        dispatcher.putResponse(mock {
+            on { isRequestMatching(any()) } doReturn true
+            on { compareTo(any()) } doReturn -1
+        }, "response")
+        dispatcher.putResponse(mock {
+            on { isRequestMatching(any()) } doReturn true
+            on { compareTo(any()) } doReturn 1
+        }, "response2")
+
+        dispatcher.dispatch(request)
+        verify(responseBuilder).buildMockResponse("response", bodyContentTransformer)
+    }
+
+    @Test
     fun `dispatches fallback response when no matching response found`() {
         dispatcher.setFallbackResponse("response")
         dispatcher.dispatch(request)
         verify(responseBuilder).buildMockResponse("response")
+    }
+
+    @Test
+    fun `dispatches fallback with body content transformer response when no matching response found`() {
+        val bodyContentTransformer: BodyContentTransformer = mock()
+        dispatcher.setBodyContentTransformerResponse(bodyContentTransformer)
+        dispatcher.setFallbackResponse("response")
+        dispatcher.dispatch(request)
+        verify(responseBuilder).buildMockResponse("response", bodyContentTransformer)
     }
 }
