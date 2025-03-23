@@ -21,6 +21,8 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
      */
     constructor() : this(MockResponseBuilder())
 
+    private var bodyContentTransformer: BodyContentTransformer? = null
+
     private val constantResponses: MutableMap<Condition, String> =
         synchronizedSortedMap(TreeMap())
     private val queuedResponses: MutableMap<Condition, Deque<String>> =
@@ -41,7 +43,7 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
                     if (fixtures.isEmpty()) {
                         queuedResponses.remove(condition)
                     }
-                    return responseBuilder.buildMockResponse(fixture)
+                    return responseBuilder.buildMockResponse(fixture, bodyContentTransformer)
                 }
             }
         }
@@ -49,13 +51,13 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
         synchronized(constantResponses) {
             constantResponses.forEach { (condition, fixture) ->
                 if (condition.isRequestMatching(request)) {
-                    return responseBuilder.buildMockResponse(fixture)
+                    return responseBuilder.buildMockResponse(fixture, bodyContentTransformer)
                 }
             }
         }
 
         fallbackResponse?.let { fallbackResponse ->
-            return responseBuilder.buildMockResponse(fallbackResponse)
+            return responseBuilder.buildMockResponse(fallbackResponse, bodyContentTransformer)
         }
 
         throw IllegalArgumentException("Unexpected request: $request")
@@ -87,5 +89,14 @@ class FixtureDispatcher internal constructor(private val responseBuilder: Respon
      */
     fun setFallbackResponse(responseFixtureName: String?) {
         fallbackResponse = responseFixtureName
+    }
+
+    /**
+     * Sets the body content transformer to transform the response body content before returning it
+     * to the client.
+     * @since 1.2.0
+     */
+    fun setBodyContentTransformerResponse(bodyContentTransformer: BodyContentTransformer?) {
+        this.bodyContentTransformer = bodyContentTransformer
     }
 }

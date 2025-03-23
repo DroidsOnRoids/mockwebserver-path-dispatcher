@@ -7,7 +7,10 @@ internal class MockResponseBuilder constructor(private val parser: ResourcesPars
     ResponseBuilder {
     constructor() : this(YamlResourcesParser())
 
-    override fun buildMockResponse(responseFixtureName: String): MockResponse {
+    override fun buildMockResponse(
+        responseFixtureName: String,
+        bodyContentTransformer: BodyContentTransformer?,
+    ): MockResponse {
         val fixture = parser.parseFrom(responseFixtureName)
 
         val mockResponse = MockResponse()
@@ -17,7 +20,10 @@ internal class MockResponseBuilder constructor(private val parser: ResourcesPars
             mockResponse.addHeader(it)
         }
 
-        when (val bodyContent = fixture.bodyContent) {
+        val bodyContent = fixture.bodyContent?.let { bodyContent ->
+            bodyContentTransformer?.transform(bodyContent) ?: bodyContent
+        }
+        when (bodyContent) {
             is BodyContent.Text -> {
                 mockResponse.addHeader("Content-Type: text/plain")
                 mockResponse.setBody(bodyContent.content)
@@ -34,6 +40,7 @@ internal class MockResponseBuilder constructor(private val parser: ResourcesPars
             fixture.connectionFailure -> {
                 mockResponse.socketPolicy = SocketPolicy.DISCONNECT_AT_START
             }
+
             fixture.timeoutFailure -> {
                 mockResponse.socketPolicy = SocketPolicy.NO_RESPONSE
             }

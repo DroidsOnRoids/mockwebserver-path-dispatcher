@@ -53,6 +53,18 @@ internal class MockResponseBuilderTest {
     }
 
     @Test
+    fun `body is transformed when a body transformer is passed`() {
+        fixture.statusCode = 200
+        fixture.bodyContent = BodyContent.Json(body)
+        val mockResponse = builder.buildMockResponse("") { _ ->
+            BodyContent.Json("transformed body")
+        }
+        assertThat(mockResponse.status).contains("200")
+        assertThat(mockResponse.getBody()?.readUtf8()).isEqualTo("transformed body")
+        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.KEEP_OPEN)
+    }
+
+    @Test
     fun `for each headers added`() {
         fixture.statusCode = 400
         fixture.headers = listOf("name:value", "name2:value2")
