@@ -42,7 +42,24 @@ body: >
     }
 ```
 
-Instead of defining body in yaml directly you can specify relative path to file with body:
+Instead of defining body in yaml directly you can specify relative path to file with body.
+There are 3 different types of files supported: json, text, and binary.
+
+### JSON
+
+By default the file is read as a JSON file. Id you don't specify the `Content-Type` it defaults to 
+`application/json` and creates a `BodyContent.Json`:
+
+```yaml
+statusCode : 404
+headers:
+- "Vary: Accept-Encoding"
+body: body_json.txt
+```
+### Plain text
+
+To create plain text responses, set the `Content-Type` to `text/plain`. The body will be an instance
+of `BodyContent.Text`:
 
 ```yaml
 statusCode : 404
@@ -51,6 +68,21 @@ headers:
 - "Vary: Accept-Encoding"
 body: body.txt
 ```
+
+### Binary
+
+To create binary responses, set the `Content-Type` to anythin different than `application-json` or 
+`text/plain`. The body will be an instance of `BodyContent.Binary`:
+
+```yaml
+statusCode : 404
+headers:
+- 'Content-Type: image/jpeg'
+- "Vary: Accept-Encoding"
+body: image.jpeg
+```
+
+### Connection issues simulation
 
 You can force the request to fail by setting `connectionFailure` to `true`:
 
@@ -65,6 +97,8 @@ Alternatively, you can specify not getting a response by simulating a timeout wi
 statusCode : 200
 timeoutFailure: true
 ```
+
+### MockWebServer without this library
 
 Code without MockWebServer path dispatcher:
 
@@ -184,18 +218,38 @@ fun condition() {
 }
 ```
 
+`BodyContentTransformer` - when you want to modify the response before being returned to the user 
+you can create a transformer and set it to the dispatcher. The transformer is very useful when you 
+want to replace some urls (i.e. images) to your mock server url so they go through the dispatcher 
+and you can then be able to mock the responses and load fake image or files:
+
+```kotlin
+fun transformResponseUrls() {
+    val mockServerUrl = … // Get the url from your MockWebServer
+    dispatcher.setBodyContentTransformerResponse{ bodyContent ->
+      if (bodyContent is BodyContent.Json) {
+        bodyContent.copy(
+          bodyContent.content.replace("https://my.domain/", mockServerUrl)
+        )
+      } else {
+        bodyContent
+      }
+    }   
+}
+```
+
 ### Download
 
 For unit tests:
 
 ```gradle
-testImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.7'
+testImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.2.0'
 ```
 
 or for Android instrumentation tests:
 
 ```gradle
-androidTestImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.1.7'
+androidTestImplementation 'pl.droidsonroids.testing:mockwebserver-path-dispatcher:1.2.0'
 ```
 
 ### License

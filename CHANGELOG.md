@@ -1,3 +1,9 @@
+### 1.2.0 - 03.25.2025
+
+- Allow binary bodies.
+- Allow modifying the response body before returning them to the client with a
+  `BodyContentTransformer`.
+
 ### 1.1.7 - 01.08.2023
 
 - Expand `PathQueryCondition` to enable matching requests on multiple query parameters (per issue [#16](https://github.com/DroidsOnRoids/mockwebserver-path-dispatcher/issues/16))
