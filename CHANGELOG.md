@@ -1,4 +1,4 @@
-### 1.2.0 - 03.25.2025
+### 1.2.0 - 04.23.2025
 
 - Allow binary bodies.
 - Allow modifying the response body before returning them to the client with a
