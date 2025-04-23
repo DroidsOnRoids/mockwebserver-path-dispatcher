@@ -11,7 +11,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
     implementation("com.squareup.okhttp3:mockwebserver:4.9.2")
     implementation("org.apache.commons:commons-text:1.9")
-    implementation("org.yaml:snakeyaml:1.29:android")
+    implementation("org.yaml:snakeyaml:2.4")
     testImplementation("org.assertj:assertj-core:3.21.0")
     testImplementation("com.nhaarman:mockito-kotlin:1.6.0")
     testImplementation("org.mockito:mockito-core:4.0.0")
