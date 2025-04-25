@@ -9,6 +9,7 @@ dependencies {
     implementation(libs.mockwebserver)
     implementation(libs.commons.text)
     implementation(libs.snakeyaml)
+
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.junit)
