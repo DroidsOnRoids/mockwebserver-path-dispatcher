@@ -1,0 +1,31 @@
+[versions]
+kotlin = "2.1.20"
+dokka = "2.0.0"
+mavenPublish = "0.31.0"
+
+mockwebserver = "4.9.2"
+commonsText = "1.9"
+snakeyaml = "2.4"
+
+assertj = "3.21.0"
+mockitoKotlin = "1.6.0"
+mockitoCore = "4.0.0"
+junit = "4.13.2"
+equalsverifier = "3.7.2"
+jacoco = "0.8.7"
+
+[libraries]
+mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserver" }
+commons-text = { module = "org.apache.commons:commons-text", version.ref = "commonsText" }
+snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
+
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+mockito-kotlin = { module = "com.nhaarman:mockito-kotlin", version.ref = "mockitoKotlin" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+junit = { module = "junit:junit", version.ref = "junit" }
+equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref = "equalsverifier" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
