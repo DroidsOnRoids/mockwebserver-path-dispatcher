@@ -6,7 +6,6 @@ plugins {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.20")
     implementation("com.squareup.okhttp3:mockwebserver:4.9.2")
     implementation("org.apache.commons:commons-text:1.9")
     implementation("org.yaml:snakeyaml:2.4")
