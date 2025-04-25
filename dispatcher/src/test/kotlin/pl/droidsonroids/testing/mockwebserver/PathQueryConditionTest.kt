@@ -1,6 +1,6 @@
 package pl.droidsonroids.testing.mockwebserver
 
-import com.nhaarman.mockito_kotlin.mock
+import org.mockito.kotlin.mock
 import nl.jqno.equalsverifier.EqualsVerifier
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.assertj.core.api.Assertions.assertThat
