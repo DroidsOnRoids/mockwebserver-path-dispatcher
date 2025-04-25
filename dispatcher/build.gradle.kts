@@ -1,14 +1,12 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     jacoco
-    id("org.jetbrains.kotlin.jvm") version ("1.5.31")
-    id("org.jetbrains.dokka") version ("1.5.31")
-    id("com.vanniktech.maven.publish") version ("0.18.0")
+    id("org.jetbrains.kotlin.jvm") version ("2.1.20")
+    id("org.jetbrains.dokka") version ("2.0.0")
+    id("com.vanniktech.maven.publish") version ("0.31.0")
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.20")
     implementation("com.squareup.okhttp3:mockwebserver:4.9.2")
     implementation("org.apache.commons:commons-text:1.9")
     implementation("org.yaml:snakeyaml:2.4")
@@ -31,15 +29,8 @@ tasks.jacocoTestReport {
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+kotlin {
+    jvmToolchain(17)
 }
 
 group = property("GROUP") as String
