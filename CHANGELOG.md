@@ -1,3 +1,11 @@
+### 1.3.0 - 04.25.2025
+
+- Update Kotlin to 2.1.20.
+- Update Gradle to 8.13.
+- Update Dokka to 2.0.0.
+- Update project dependencies.
+- Migrate to version catalogs.
+
 ### 1.2.0 - 04.23.2025
 
 - Allow binary bodies.
