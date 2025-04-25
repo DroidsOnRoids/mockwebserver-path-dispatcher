@@ -11,7 +11,6 @@ dependencies {
     implementation(libs.snakeyaml)
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.mockito.core)
     testImplementation(libs.junit)
     testImplementation(libs.equalsverifier)
 }

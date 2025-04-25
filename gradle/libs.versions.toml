@@ -21,7 +21,6 @@ snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
 
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
 junit = { module = "junit:junit", version.ref = "junit" }
 equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref = "equalsverifier" }
 
