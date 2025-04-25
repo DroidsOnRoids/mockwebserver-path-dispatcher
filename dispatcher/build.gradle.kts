@@ -1,23 +1,23 @@
 plugins {
     jacoco
-    id("org.jetbrains.kotlin.jvm") version ("2.1.20")
-    id("org.jetbrains.dokka") version ("2.0.0")
-    id("com.vanniktech.maven.publish") version ("0.31.0")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.maven.publish)
 }
 
 dependencies {
-    implementation("com.squareup.okhttp3:mockwebserver:4.9.2")
-    implementation("org.apache.commons:commons-text:1.9")
-    implementation("org.yaml:snakeyaml:2.4")
-    testImplementation("org.assertj:assertj-core:3.21.0")
-    testImplementation("com.nhaarman:mockito-kotlin:1.6.0")
-    testImplementation("org.mockito:mockito-core:4.0.0")
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.7.2")
+    implementation(libs.mockwebserver)
+    implementation(libs.commons.text)
+    implementation(libs.snakeyaml)
+    testImplementation(libs.assertj.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.junit)
+    testImplementation(libs.equalsverifier)
 }
 
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = libs.versions.jacoco.get()
 }
 
 tasks.jacocoTestReport {
