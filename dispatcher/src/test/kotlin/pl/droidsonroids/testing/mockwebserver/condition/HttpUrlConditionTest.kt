@@ -1,39 +1,17 @@
 package pl.droidsonroids.testing.mockwebserver.condition
 
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.whenever
+import mockwebserver3.RecordedRequest
 import okhttp3.Headers
 import okhttp3.HttpUrl
-import okhttp3.mockwebserver.RecordedRequest
-import okio.Buffer
+import okhttp3.HttpUrl.Companion.toHttpUrl
+import okio.ByteString
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Spy
 import org.mockito.junit.MockitoJUnitRunner
-import java.net.Socket
 
 @RunWith(MockitoJUnitRunner::class)
 class HttpUrlConditionTest {
-    @Spy private val socket = Socket()
-
-    @Before
-    fun setUp() {
-        whenever(socket.localPort).doReturn(8080)
-    }
-
-    @Test
-    fun `request without URL does not match`() {
-        val matchAllUrlCondition = object : HttpUrlCondition() {
-            override fun isUrlMatching(url: HttpUrl) = true
-            override fun compareTo(other: Condition) = 0
-        }
-        val request =
-            RecordedRequest("", Headers.headersOf(), emptyList(), 0, Buffer(), 0, socket)
-
-        assertThat(matchAllUrlCondition.isRequestMatching(request)).isFalse
-    }
 
     @Test
     fun `request with different HTTP method does not match`() {
@@ -45,7 +23,20 @@ class HttpUrlConditionTest {
             override fun compareTo(other: Condition) = 0
         }
         val request =
-            RecordedRequest("GET /some/path HTTP/1.1", Headers.headersOf(), emptyList(), 0, Buffer(), 0, socket)
+            RecordedRequest(
+                connectionIndex = 0,
+                headers = Headers.headersOf(),
+                chunkSizes = emptyList(),
+                bodySize = 0,
+                body = ByteString.EMPTY,
+                exchangeIndex = 0,
+                handshake = null,
+                handshakeServerNames = emptyList(),
+                method = "GET",
+                target = "/some/path",
+                version = "HTTP/1.1",
+                url = "http://localhost:8080".toHttpUrl(),
+            )
 
         assertThat(matchAllUrlCondition.isRequestMatching(request)).isFalse
     }
@@ -60,7 +51,20 @@ class HttpUrlConditionTest {
             override fun compareTo(other: Condition) = 0
         }
         val request =
-            RecordedRequest("GET /some/path HTTP/1.1", Headers.headersOf(), emptyList(), 0, Buffer(), 0, socket)
+            RecordedRequest(
+                connectionIndex = 0,
+                headers = Headers.headersOf(),
+                chunkSizes = emptyList(),
+                bodySize = 0,
+                body = ByteString.EMPTY,
+                exchangeIndex = 0,
+                handshake = null,
+                handshakeServerNames = emptyList(),
+                method = "GET",
+                target = "/some/path",
+                version = "HTTP/1.1",
+                url = "http://localhost:8080".toHttpUrl(),
+            )
 
         assertThat(matchAllUrlCondition.isRequestMatching(request)).isTrue
     }
@@ -69,7 +73,7 @@ class HttpUrlConditionTest {
     fun `request with URL with any request method should match any request method`() {
         HTTPMethod.values()
             .filter { it != HTTPMethod.ANY }
-            .forEach { httpMethod->
+            .forEach { httpMethod ->
                 val matchAllUrlCondition = object : HttpUrlCondition() {
                     override val httpMethod: HTTPMethod
                         get() = HTTPMethod.ANY
@@ -78,7 +82,20 @@ class HttpUrlConditionTest {
                     override fun compareTo(other: Condition) = 0
                 }
                 val request =
-                    RecordedRequest("${httpMethod.name} /some/path HTTP/1.1", Headers.headersOf(), emptyList(), 0, Buffer(), 0, socket)
+                    RecordedRequest(
+                        connectionIndex = 0,
+                        headers = Headers.headersOf(),
+                        chunkSizes = emptyList(),
+                        bodySize = 0,
+                        body = ByteString.EMPTY,
+                        exchangeIndex = 0,
+                        handshake = null,
+                        handshakeServerNames = emptyList(),
+                        method = httpMethod.name,
+                        target = "/some/path",
+                        version = "HTTP/1.1",
+                        url = "http://localhost:8080".toHttpUrl(),
+                    )
 
                 assertThat(matchAllUrlCondition.isRequestMatching(request))
                     .withFailMessage { "${httpMethod.name} does not match condition" }

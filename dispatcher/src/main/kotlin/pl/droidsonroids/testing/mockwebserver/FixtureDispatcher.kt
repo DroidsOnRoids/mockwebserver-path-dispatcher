@@ -1,8 +1,8 @@
 package pl.droidsonroids.testing.mockwebserver
 
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.RecordedRequest
+import mockwebserver3.Dispatcher
+import mockwebserver3.MockResponse
+import mockwebserver3.RecordedRequest
 import pl.droidsonroids.testing.mockwebserver.condition.Condition
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryCondition
 import java.util.*

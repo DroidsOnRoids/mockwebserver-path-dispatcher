@@ -1,9 +1,9 @@
 package pl.droidsonroids.testing.mockwebserver
 
+import mockwebserver3.junit4.MockWebServerRule
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -11,7 +11,9 @@ import pl.droidsonroids.testing.mockwebserver.condition.PathQueryConditionFactor
 
 class FixtureDispatcherIntegrationTest {
     @get:Rule
-    val mockWebServer = MockWebServer()
+    val mockWebServerRule = MockWebServerRule()
+    val mockWebServer by lazy { mockWebServerRule.server }
+
 
     @Test
     fun `response dispatched with mockwebserver`() {

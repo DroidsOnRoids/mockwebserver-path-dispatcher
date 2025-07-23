@@ -1,8 +1,8 @@
 package pl.droidsonroids.testing.mockwebserver
 
+import mockwebserver3.junit4.MockWebServerRule
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -17,9 +17,9 @@ private const val TEST_JSON_ARRAY = "[ ]"
 
 class FunctionalTest {
 
-    @JvmField
-    @Rule
-    val mockWebServer = MockWebServer()
+    @get:Rule
+    val mockWebServerRule = MockWebServerRule()
+    val mockWebServer by lazy { mockWebServerRule.server }
 
     private var port: Int = 0
     private lateinit var client: OkHttpClient
