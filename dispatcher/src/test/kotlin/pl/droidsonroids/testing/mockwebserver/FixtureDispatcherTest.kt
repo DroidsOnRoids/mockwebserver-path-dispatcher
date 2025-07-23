@@ -1,9 +1,5 @@
 package pl.droidsonroids.testing.mockwebserver
 
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
 import mockwebserver3.RecordedRequest
 import okhttp3.Headers
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -11,6 +7,10 @@ import okio.ByteString
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 class FixtureDispatcherTest {
     private lateinit var dispatcher: FixtureDispatcher

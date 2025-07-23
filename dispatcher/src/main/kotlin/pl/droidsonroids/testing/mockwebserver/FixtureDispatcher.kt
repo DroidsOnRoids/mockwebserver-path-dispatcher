@@ -5,8 +5,10 @@ import mockwebserver3.MockResponse
 import mockwebserver3.RecordedRequest
 import pl.droidsonroids.testing.mockwebserver.condition.Condition
 import pl.droidsonroids.testing.mockwebserver.condition.PathQueryCondition
-import java.util.*
+import java.util.ArrayDeque
 import java.util.Collections.synchronizedSortedMap
+import java.util.Deque
+import java.util.TreeMap
 
 /**
  * The dispatcher using conditional fixture response mapping and enqueuing.
