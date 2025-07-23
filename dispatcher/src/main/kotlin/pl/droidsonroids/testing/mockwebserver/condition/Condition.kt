@@ -1,6 +1,6 @@
 package pl.droidsonroids.testing.mockwebserver.condition
 
-import okhttp3.mockwebserver.RecordedRequest
+import mockwebserver3.RecordedRequest
 
 /**
  * Represents set of mocked request properties which have to match received request.

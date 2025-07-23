@@ -1,6 +1,6 @@
 package pl.droidsonroids.testing.mockwebserver
 
-import okhttp3.mockwebserver.MockResponse
+import mockwebserver3.MockResponse
 
 internal interface ResponseBuilder {
     fun buildMockResponse(

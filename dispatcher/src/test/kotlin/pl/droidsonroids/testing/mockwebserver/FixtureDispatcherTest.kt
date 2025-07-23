@@ -4,19 +4,32 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
+import mockwebserver3.RecordedRequest
 import okhttp3.Headers
-import okhttp3.mockwebserver.RecordedRequest
-import okio.Buffer
+import okhttp3.HttpUrl.Companion.toHttpUrl
+import okio.ByteString
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Before
 import org.junit.Test
-import java.net.Socket
 
 class FixtureDispatcherTest {
     private lateinit var dispatcher: FixtureDispatcher
     private lateinit var responseBuilder: ResponseBuilder
     private val request =
-        RecordedRequest("", Headers.headersOf(), emptyList(), 0, Buffer(), 0, Socket())
+        RecordedRequest(
+            connectionIndex = 0,
+            headers = Headers.headersOf(),
+            chunkSizes = emptyList(),
+            bodySize = 0,
+            body = ByteString.EMPTY,
+            exchangeIndex = 0,
+            handshake = null,
+            handshakeServerNames = emptyList(),
+            method = "",
+            target = "",
+            version = "",
+            url = "http://localhost:8080".toHttpUrl(),
+        )
 
     @Before
     fun setUp() {

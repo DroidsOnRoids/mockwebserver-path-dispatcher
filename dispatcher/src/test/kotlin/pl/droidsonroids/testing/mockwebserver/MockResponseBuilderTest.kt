@@ -3,7 +3,8 @@ package pl.droidsonroids.testing.mockwebserver
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import okhttp3.mockwebserver.SocketPolicy
+import mockwebserver3.MockResponseBody
+import mockwebserver3.SocketEffect
 import okio.Buffer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -28,8 +29,8 @@ internal class MockResponseBuilderTest {
         fixture.bodyContent = BodyContent.Text(body)
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.status).contains("200")
-        assertThat(mockResponse.getBody()?.readUtf8()).isEqualTo(body)
-        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.KEEP_OPEN)
+        assertThat(mockResponse.body?.readUtf8()).isEqualTo(body)
+        assertThat(mockResponse.onRequestStart).isNull()
     }
 
     @Test
@@ -38,8 +39,8 @@ internal class MockResponseBuilderTest {
         fixture.bodyContent = BodyContent.Binary(Buffer().writeUtf8(body))
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.status).contains("200")
-        assertThat(mockResponse.getBody()?.readByteArray()).isEqualTo(body.toByteArray())
-        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.KEEP_OPEN)
+        assertThat(mockResponse.body?.readByteArray()).isEqualTo(body.toByteArray())
+        assertThat(mockResponse.onRequestStart).isNull()
     }
 
     @Test
@@ -48,8 +49,8 @@ internal class MockResponseBuilderTest {
         fixture.body = body
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.status).contains("200")
-        assertThat(mockResponse.getBody()?.readUtf8()).isNull()
-        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.KEEP_OPEN)
+        assertThat(mockResponse.body).isNull()
+        assertThat(mockResponse.onRequestStart).isNull()
     }
 
     @Test
@@ -60,8 +61,8 @@ internal class MockResponseBuilderTest {
             BodyContent.Json("transformed body")
         }
         assertThat(mockResponse.status).contains("200")
-        assertThat(mockResponse.getBody()?.readUtf8()).isEqualTo("transformed body")
-        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.KEEP_OPEN)
+        assertThat(mockResponse.body?.readUtf8()).isEqualTo("transformed body")
+        assertThat(mockResponse.onRequestStart).isNull()
     }
 
     @Test
@@ -70,10 +71,10 @@ internal class MockResponseBuilderTest {
         fixture.headers = listOf("name:value", "name2:value2")
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.status).contains("400")
-        assertThat(mockResponse.getBody()).isNull()
+        assertThat(mockResponse.body).isNull()
         assertThat(mockResponse.headers["name"]).isEqualTo("value")
         assertThat(mockResponse.headers["name2"]).isEqualTo("value2")
-        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.KEEP_OPEN)
+        assertThat(mockResponse.onRequestStart).isNull()
     }
 
     @Test
@@ -82,7 +83,7 @@ internal class MockResponseBuilderTest {
         fixture.bodyContent = BodyContent.Text("text")
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.headers["Content-Type"]).isEqualTo("text/plain")
-        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.KEEP_OPEN)
+        assertThat(mockResponse.onRequestStart).isNull()
     }
 
     @Test
@@ -91,7 +92,7 @@ internal class MockResponseBuilderTest {
         fixture.bodyContent = BodyContent.Json("""{"text"}""")
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.headers["Content-Type"]).isEqualTo("application/json")
-        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.KEEP_OPEN)
+        assertThat(mockResponse.onRequestStart).isNull()
     }
 
     @Test
@@ -100,7 +101,7 @@ internal class MockResponseBuilderTest {
         fixture.bodyContent = BodyContent.Text("text")
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.headers["Content-Type"]).isEqualTo("text/plain")
-        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.KEEP_OPEN)
+        assertThat(mockResponse.onRequestStart).isNull()
     }
 
     @Test
@@ -109,26 +110,38 @@ internal class MockResponseBuilderTest {
         fixture.bodyContent = BodyContent.Json("""{"text"}""")
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.headers["Content-Type"]).isEqualTo("application/json")
-        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.KEEP_OPEN)
+        assertThat(mockResponse.onRequestStart).isNull()
     }
 
     @Test
-    fun `DISCONNECT_AT_START set when connection failure is true`() {
+    fun `Should shutdown connection when connection failure is true`() {
         fixture.statusCode = 200
         fixture.connectionFailure = true
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.status).contains("200")
-        assertThat(mockResponse.getBody()).isNull()
-        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.DISCONNECT_AT_START)
+        assertThat(mockResponse.body).isNull()
+        assertThat(mockResponse.onRequestStart).isEqualTo(SocketEffect.ShutdownConnection)
     }
 
     @Test
-    fun `NO_RESPONSE set when timeout failure is true`() {
+    fun `Should not process response when timeout failure is true`() {
         fixture.statusCode = 200
         fixture.timeoutFailure = true
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.status).contains("200")
-        assertThat(mockResponse.getBody()).isNull()
-        assertThat(mockResponse.socketPolicy).isEqualTo(SocketPolicy.NO_RESPONSE)
+        assertThat(mockResponse.body).isNull()
+        assertThat(mockResponse.onResponseStart).isEqualTo(SocketEffect.Stall)
+    }
+
+    private fun MockResponseBody.readUtf8(): String? =
+        writeToSink().readUtf8()
+
+    private fun MockResponseBody.readByteArray(): ByteArray =
+        writeToSink().readByteArray()
+
+    private fun MockResponseBody.writeToSink(): Buffer {
+        val sink = Buffer()
+        writeTo(sink)
+        return sink
     }
 }

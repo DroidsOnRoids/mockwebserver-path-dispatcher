@@ -1,7 +1,7 @@
 package pl.droidsonroids.testing.mockwebserver.condition
 
+import mockwebserver3.RecordedRequest
 import okhttp3.HttpUrl
-import okhttp3.mockwebserver.RecordedRequest
 
 /**
  * A Condition which matches HttpUrls only, they are extracted from request so that only
@@ -16,10 +16,7 @@ abstract class HttpUrlCondition : Condition {
             return false
         }
 
-        return when (val url = request.requestUrl) {
-            null -> false
-            else -> isUrlMatching(url)
-        }
+        return isUrlMatching(request.url)
     }
 
     /**

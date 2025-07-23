@@ -1,7 +1,7 @@
 package pl.droidsonroids.testing.mockwebserver
 
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.SocketPolicy
+import mockwebserver3.MockResponse
+import mockwebserver3.SocketEffect
 
 internal class MockResponseBuilder constructor(private val parser: ResourcesParser) :
     ResponseBuilder {
@@ -13,11 +13,11 @@ internal class MockResponseBuilder constructor(private val parser: ResourcesPars
     ): MockResponse {
         val fixture = parser.parseFrom(responseFixtureName)
 
-        val mockResponse = MockResponse()
-        mockResponse.setResponseCode(fixture.statusCode)
+        val mockResponseBuilder = MockResponse.Builder()
+        mockResponseBuilder.code(fixture.statusCode)
 
         fixture.headers.forEach {
-            mockResponse.addHeader(it)
+            mockResponseBuilder.addHeader(it)
         }
 
         val bodyContent = fixture.bodyContent?.let { bodyContent ->
@@ -25,27 +25,27 @@ internal class MockResponseBuilder constructor(private val parser: ResourcesPars
         }
         when (bodyContent) {
             is BodyContent.Text -> {
-                mockResponse.addHeader("Content-Type: text/plain")
-                mockResponse.setBody(bodyContent.content)
+                mockResponseBuilder.addHeader("Content-Type: text/plain")
+                mockResponseBuilder.body(bodyContent.content)
             }
             is BodyContent.Json -> {
-                mockResponse.addHeader("Content-Type: application/json")
-                mockResponse.setBody(bodyContent.content)
+                mockResponseBuilder.addHeader("Content-Type: application/json")
+                mockResponseBuilder.body(bodyContent.content)
             }
-            is BodyContent.Binary -> mockResponse.setBody(bodyContent.content)
+            is BodyContent.Binary -> mockResponseBuilder.body(bodyContent.content)
             null -> Unit
         }
 
         when {
             fixture.connectionFailure -> {
-                mockResponse.socketPolicy = SocketPolicy.DISCONNECT_AT_START
+                mockResponseBuilder.onRequestStart(SocketEffect.ShutdownConnection)
             }
 
             fixture.timeoutFailure -> {
-                mockResponse.socketPolicy = SocketPolicy.NO_RESPONSE
+                mockResponseBuilder.onResponseStart(SocketEffect.Stall)
             }
         }
 
-        return mockResponse
+        return mockResponseBuilder.build()
     }
 }
