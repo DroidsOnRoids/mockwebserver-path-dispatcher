@@ -1,14 +1,14 @@
 package pl.droidsonroids.testing.mockwebserver
 
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
 import mockwebserver3.MockResponseBody
 import mockwebserver3.SocketEffect
 import okio.Buffer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
 internal class MockResponseBuilderTest {
     private val body = "body"
