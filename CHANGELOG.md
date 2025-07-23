@@ -1,3 +1,11 @@
+### 1.4.0 - 07.23.2025
+
+- Update OkHttp to 5.1.0
+
+#### Breaking changes
+
+- OkHttp 5.0.0+ is required.
+
 ### 1.3.0 - 04.25.2025
 
 - Update Kotlin to 2.1.20.
