@@ -38,7 +38,7 @@ internal class MockResponseBuilder constructor(private val parser: ResourcesPars
 
         when {
             fixture.connectionFailure -> {
-                mockResponseBuilder.onRequestStart(SocketEffect.ShutdownConnection)
+                mockResponseBuilder.onRequestStart(SocketEffect.CloseSocket())
             }
 
             fixture.timeoutFailure -> {
