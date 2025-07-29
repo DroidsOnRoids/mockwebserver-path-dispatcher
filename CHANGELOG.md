@@ -1,3 +1,7 @@
+### 1.4.1 - 07.29.2025
+
+- Fix connection failure SocketEffect.
+
 ### 1.4.0 - 07.23.2025
 
 - Update OkHttp to 5.1.0
