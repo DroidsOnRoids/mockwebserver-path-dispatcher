@@ -120,7 +120,9 @@ internal class MockResponseBuilderTest {
         val mockResponse = builder.buildMockResponse("")
         assertThat(mockResponse.status).contains("200")
         assertThat(mockResponse.body).isNull()
-        assertThat(mockResponse.onRequestStart).isEqualTo(SocketEffect.ShutdownConnection)
+        assertThat(mockResponse.onRequestStart)
+            .usingRecursiveComparison()
+            .isEqualTo(SocketEffect.CloseSocket())
     }
 
     @Test
